@@ -1,0 +1,354 @@
+
+ 
+Cx: 
+final training loss: 2.5600989829399623e-05 
+final validation loss: 2.5901925255311653e-05 
+ 
+Cz: 
+final training loss: 4.035058736917563e-05 
+final validation loss: 4.0295602957485244e-05 
+ 
+Cm: 
+final training loss: 2.7858453904627822e-05 
+final validation loss: 2.9594535590149462e-05 
+ 
+Cy: 
+final training loss: 5.478257776303508e-07 
+final validation loss: 5.643548206535343e-07 
+ 
+Cn: 
+final training loss: 8.628901014162693e-06 
+final validation loss: 9.087409125640988e-06 
+ 
+Cl: 
+final training loss: 8.915866601455491e-06 
+final validation loss: 9.029257853399031e-06 
+ 
+Cxq: 
+final training loss: 9.486678209214006e-06 
+final validation loss: 9.032456546265166e-06 
+ 
+Cyr: 
+final training loss: 5.919614977756282e-06 
+final validation loss: 6.088689588068519e-06 
+ 
+Cyp: 
+final training loss: 6.434443639591336e-05 
+final validation loss: 6.495111301774159e-05 
+ 
+Czq: 
+final training loss: 0.00026943645207211375 
+final validation loss: 0.00026814150623977184 
+ 
+Clr: 
+final training loss: nan 
+final validation loss: nan 
+ 
+Clp: 
+final training loss: 2.473738459229935e-05 
+final validation loss: 2.5077431928366423e-05 
+ 
+Cmq: 
+final training loss: 6.442401627282379e-06 
+final validation loss: 6.7824357756762765e-06 
+ 
+Cnr: 
+final training loss: 1.5446226825588383e-05 
+final validation loss: 1.5136863112275023e-05 
+ 
+Cnp: 
+final training loss: 1.2274445907678455e-05 
+final validation loss: 1.2378121027722955e-05 
+ 
+delta_Cx_lef: 
+final training loss: 1.5803976566530764e-05 
+final validation loss: 1.5662026271456853e-05 
+ 
+delta_Cz_lef: 
+final training loss: 0.0001063316740328446 
+final validation loss: 0.00010793041292345151 
+ 
+delta_Cm_lef: 
+final training loss: 0.00022233329946175218 
+final validation loss: 0.0002221957838628441 
+ 
+delta_Cy_lef: 
+final training loss: 4.35783076682128e-05 
+final validation loss: 4.499654096434824e-05 
+ 
+delta_Cn_lef: 
+final training loss: 0.00011331689165672287 
+final validation loss: 0.00011799015192082152 
+ 
+delta_Cl_lef: 
+final training loss: 5.7959598052548245e-05 
+final validation loss: 5.695777872460894e-05 
+ 
+delta_Cxq_lef: 
+final training loss: 1.0816101166710723e-05 
+final validation loss: 1.0639536412782036e-05 
+ 
+delta_Cyr_lef: 
+final training loss: 1.9861878172378056e-05 
+final validation loss: 1.994940612348728e-05 
+ 
+delta_Cyp_lef: 
+final training loss: 4.839004759560339e-05 
+final validation loss: 4.693551454693079e-05 
+ 
+delta_Czq_lef: 
+final training loss: 7.017314783297479e-05 
+final validation loss: 6.997305899858475e-05 
+ 
+delta_Clr_lef: 
+final training loss: 9.247632988262922e-06 
+final validation loss: 9.301525096816476e-06 
+ 
+delta_Clp_lef: 
+final training loss: 1.7453736290917732e-05 
+final validation loss: 1.799829442461487e-05 
+ 
+delta_Cmq_lef: 
+final training loss: 9.393661457579583e-06 
+final validation loss: 9.950014828064013e-06 
+ 
+delta_Cnr_lef: 
+final training loss: 0.0048919133841991425 
+final validation loss: 0.004882049281150103 
+ 
+delta_Cnp_lef: 
+final training loss: 1.1989676750090439e-05 
+final validation loss: 1.1988535334239714e-05 
+ 
+delta_Cy_r30: 
+final training loss: 7.35450885258615e-05 
+final validation loss: 7.312587695196271e-05 
+ 
+delta_Cn_r30: 
+final training loss: 0.00010885397932725027 
+final validation loss: 0.00010675275552785024 
+ 
+delta_Cl_r30: 
+final training loss: 0.00015136726142372936 
+final validation loss: 0.00015027550398372114 
+ 
+delta_Cy_a20: 
+final training loss: 4.2849529563682154e-05 
+final validation loss: 4.387752414913848e-05 
+ 
+delta_Cy_a20_lef: 
+final training loss: 5.5547247029608116e-05 
+final validation loss: 5.385631084209308e-05 
+ 
+delta_Cn_a20: 
+final training loss: 8.492875349475071e-05 
+final validation loss: 8.784153033047915e-05 
+ 
+delta_Cn_a20_lef: 
+final training loss: 0.00014739326434209943 
+final validation loss: 0.00014892902981955558 
+ 
+delta_Cl_a20: 
+final training loss: 3.563713107723743e-05 
+final validation loss: 3.6127010389463976e-05 
+ 
+delta_Cl_a20_lef: 
+final training loss: 6.013391976011917e-05 
+final validation loss: 6.008382115396671e-05 
+ 
+Cx: 
+final training loss: 3.488578295218758e-05 
+final validation loss: 3.509491216391325e-05 
+ 
+Cz: 
+final training loss: 1.6818298718135338e-06 
+final validation loss: 1.9865772173943697e-06 
+ 
+Cm: 
+final training loss: 6.17815567238722e-06 
+final validation loss: 7.10664744474343e-06 
+ 
+Cy: 
+final training loss: 1.0226284530290286e-06 
+final validation loss: 1.0409239621367306e-06 
+ 
+Cn: 
+final training loss: 3.8223051888053305e-06 
+final validation loss: 4.367154815554386e-06 
+ 
+Cl: 
+final training loss: 9.07433877728181e-06 
+final validation loss: 9.193046025757212e-06 
+ 
+Cxq: 
+final training loss: 1.7260315871681087e-05 
+final validation loss: 1.700857319519855e-05 
+ 
+Cyr: 
+final training loss: 4.0785093915474135e-06 
+final validation loss: 3.973070306528825e-06 
+ 
+Cyp: 
+final training loss: 6.6545658228278626e-06 
+final validation loss: 6.462733836087864e-06 
+ 
+Czq: 
+final training loss: 3.3897160847118357e-06 
+final validation loss: 3.245882453484228e-06 
+ 
+Clr: 
+final training loss: nan 
+final validation loss: nan 
+ 
+Clp: 
+final training loss: 6.474853307736339e-06 
+final validation loss: 6.451735771406675e-06 
+ 
+Cmq: 
+final training loss: 4.27701434091432e-06 
+final validation loss: 4.281569999875501e-06 
+ 
+Cnr: 
+final training loss: 3.230615902793943e-06 
+final validation loss: 3.5165242024959298e-06 
+ 
+Cnp: 
+final training loss: 7.4344857239339035e-06 
+final validation loss: 7.20465914127999e-06 
+ 
+delta_Cx_lef: 
+final training loss: 3.753972919184889e-07 
+final validation loss: 3.7916757378297916e-07 
+ 
+delta_Cz_lef: 
+final training loss: 4.009395979664987e-06 
+final validation loss: 4.111495400138665e-06 
+ 
+delta_Cm_lef: 
+final training loss: 9.711463917483343e-07 
+final validation loss: 1.119396756621427e-06 
+ 
+delta_Cy_lef: 
+final training loss: 1.0344245993110235e-06 
+final validation loss: 1.1488845075291465e-06 
+ 
+delta_Cn_lef: 
+final training loss: 4.689110028266441e-06 
+final validation loss: 4.885357611783547e-06 
+ 
+delta_Cl_lef: 
+final training loss: 1.063558329406078e-06 
+final validation loss: 1.1188419648533454e-06 
+ 
+delta_Cxq_lef: 
+final training loss: 1.998438165173866e-06 
+final validation loss: 1.966417812582222e-06 
+ 
+delta_Cyr_lef: 
+final training loss: 4.607771188602783e-06 
+final validation loss: 4.6317281885421835e-06 
+ 
+delta_Cyp_lef: 
+final training loss: 1.833354508562479e-05 
+final validation loss: 1.92982788576046e-05 
+ 
+delta_Czq_lef: 
+final training loss: 2.305058615093003e-06 
+final validation loss: 2.3885720565886004e-06 
+ 
+delta_Clr_lef: 
+final training loss: 4.003362846560776e-06 
+final validation loss: 3.89422621083213e-06 
+ 
+delta_Clp_lef: 
+final training loss: 4.009455096820602e-06 
+final validation loss: 4.079392965650186e-06 
+ 
+delta_Cmq_lef: 
+final training loss: 6.840680725872517e-06 
+final validation loss: 6.805249540775549e-06 
+ 
+delta_Cnr_lef: 
+final training loss: 8.80049447005149e-06 
+final validation loss: 8.90793489816133e-06 
+ 
+delta_Cnp_lef: 
+final training loss: 3.4247377698193304e-06 
+final validation loss: 3.182626187481219e-06 
+ 
+delta_Cy_r30: 
+final training loss: 1.0386492022007587e-06 
+final validation loss: 1.1270061577306478e-06 
+ 
+delta_Cn_r30: 
+final training loss: 3.3249016269110143e-06 
+final validation loss: 3.411942543607438e-06 
+ 
+delta_Cl_r30: 
+final training loss: 1.3429336149783921e-06 
+final validation loss: 1.447748445571051e-06 
+ 
+delta_Cy_a20: 
+final training loss: 7.1745444074622355e-06 
+final validation loss: 7.306543011509348e-06 
+ 
+delta_Cy_a20_lef: 
+final training loss: 3.383328476047609e-06 
+final validation loss: 3.4377899282844737e-06 
+ 
+delta_Cn_a20: 
+final training loss: 1.2805327287424006e-06 
+final validation loss: 1.3221770132076927e-06 
+ 
+delta_Cn_a20_lef: 
+final training loss: 2.078385250570136e-06 
+final validation loss: 2.28158523896127e-06 
+ 
+delta_Cl_a20: 
+final training loss: 1.7373143919030554e-06 
+final validation loss: 1.8098068039762438e-06 
+ 
+delta_Cl_a20_lef: 
+final training loss: 2.0408613181643886e-06 
+final validation loss: 2.181137006118661e-06 
+ 
+delta_Cnbeta: 
+final training loss: 1.0542939321567246e-07 
+final validation loss: 1.1615563977329657e-07 
+ 
+delta_Clbeta: 
+final training loss: 4.904185857412813e-08 
+final validation loss: 4.4210235472519344e-08 
+ 
+delta_Cm: 
+final training loss: 2.7950756376071695e-08 
+final validation loss: 2.4141694865420504e-08 
+ 
+eta_el: 
+final training loss: 1.337089017283688e-08 
+final validation loss: 1.5061900171531306e-08 
+ 
+delta_Cm_ds: 
+final training loss: nan 
+final validation loss: nan 
+ 
+Cx: 
+final training loss: 0.00013293148367665708 
+final validation loss: 0.00013337489508558065 
+ 
+Cz: 
+final training loss: 8.663956396048889e-05 
+final validation loss: 8.544819138478488e-05 
+ 
+Cm: 
+final training loss: 0.00023534511274192482 
+final validation loss: 0.00023254557163454592 
+ 
+Cy: 
+final training loss: 4.325104600866325e-05 
+final validation loss: 4.3562893552007154e-05 
+ 
+Cn: 
+final training loss: 0.0003257675562053919 
+final validation loss: 0.0003298299852758646 
+ 
