@@ -11,6 +11,7 @@ the aircraft, environmental, simulation, initial conditions, and other parameter
 
 #import numpy as np
 import numpy as np
+import torch
 from numpy import pi
 from scipy.constants import g
 import os
@@ -102,8 +103,8 @@ lef_max         = 25            # (deg)
 m2f = 3.28084 # metres to feet conversion
 f2m = 1/m2f # feet to metres conversion
 
-x0 = np.array([npos*m2f, epos*m2f, h*m2f, phi, theta, psi, vt*m2f, alpha, beta, p, q, r, T, dh, da, dr, lef, -alpha*180/pi])#[np.newaxis].T
-u0 = np.copy(x0[12:16])
+x0 = torch.tensor([npos*m2f, epos*m2f, h*m2f, phi, theta, psi, vt*m2f, alpha, beta, p, q, r, T, dh, da, dr, lef, -alpha*180/pi])#[np.newaxis].T
+u0 = torch.clone(x0[12:16])
 
 if stab_flag == 1:
     so_file = os.getcwd() + "/dynamics/C/nlplant_xcg35.so"
@@ -142,11 +143,11 @@ mpc_controlled_states = ['p','q','r']
 @dataclass
 class stateVector:
     states: list
-    values: np.array
+    values: torch.tensor
     units: list
     upper_bound: list
     lower_bound: list
-    initial_condition: np.array
+    initial_condition: torch.tensor
     observed_states: list
     mpc_states: list
     mpc_inputs: list
@@ -171,29 +172,29 @@ class stateVector:
         
         self._mpc_obs_x_idx = [i for i in range(len(self.mpc_states)) if self.mpc_states[i] in self.observed_states]
                 
-        self._np_x_lb = np.array(self.lower_bound)
-        self._np_x_ub = np.array(self.upper_bound)
+        self._np_x_lb = torch.tensor(self.lower_bound)
+        self._np_x_ub = torch.tensor(self.upper_bound)
         
-        self._vec_mpc_x_lb = np.array(self._mpc_x_lb)[:,None]
-        self._vec_mpc_x_ub = np.array(self._mpc_x_ub)[:,None]
+        self._vec_mpc_x_lb = torch.tensor(self._mpc_x_lb)[:,None]
+        self._vec_mpc_x_ub = torch.tensor(self._mpc_x_ub)[:,None]
         
     def _get_mpc_x(self):
-        return np.array([self.values[i] for i in self._mpc_x_idx])
+        return torch.tensor([self.values[i] for i in self._mpc_x_idx])
     
     def _get_mpc_act_states(self):
-        return np.array([self.values[i] for i in self._mpc_u_states_idx])
+        return torch.tensor([self.values[i] for i in self._mpc_u_states_idx])
     
         
 @dataclass
 class inputVector:
     inputs: list
-    values: np.array
+    values: torch.tensor
     units: list
     upper_cmd_bound: list
     lower_cmd_bound: list
     upper_rate_bound: list
     lower_rate_bound: list
-    initial_condition: np.array
+    initial_condition: torch.tensor
     mpc_inputs: list
     
     def __post_init__(self):
@@ -202,13 +203,13 @@ class inputVector:
         self._mpc_u_ub = [self.upper_cmd_bound[i] for i in self._mpc_u_idx]
         self._mpc_udot_lb = [self.lower_rate_bound[i] for i in self._mpc_u_idx]
         self._mpc_udot_ub = [self.upper_rate_bound[i] for i in self._mpc_u_idx]
-        self._vec_mpc_u_lb = np.array(self._mpc_u_lb)[np.newaxis].T
-        self._vec_mpc_u_ub = np.array(self._mpc_u_ub)[np.newaxis].T
-        self._vec_mpc_udot_lb = np.array(self._mpc_udot_lb)[np.newaxis].T
-        self._vec_mpc_udot_ub = np.array(self._mpc_udot_ub)[np.newaxis].T
+        self._vec_mpc_u_lb = torch.tensor(self._mpc_u_lb).unsqueeze(0).T
+        self._vec_mpc_u_ub = torch.tensor(self._mpc_u_ub).unsqueeze(0).T
+        self._vec_mpc_udot_lb = torch.tensor(self._mpc_udot_lb).unsqueeze(0).T
+        self._vec_mpc_udot_ub = torch.tensor(self._mpc_udot_ub).unsqueeze(0).T
         
     def _get_mpc_u(self):
-        return np.array([self.values[i] for i in self._mpc_u_idx])
+        return torch.tensor([self.values[i] for i in self._mpc_u_idx])
     
 @dataclass#(frozen=True)
 class simulationParameters:
@@ -220,26 +221,26 @@ class simulationParameters:
     
 @dataclass
 class SS:
-    A: np.array
-    B: np.array
-    C: np.array
-    D: np.array
-    # Ac: np.array
-    # Bc: np.array
-    # Cc: np.array
-    # Dc: np.array
-    x_lin: np.array
-    u_lin: np.array
+    A: torch.tensor
+    B: torch.tensor
+    C: torch.tensor
+    D: torch.tensor
+    # Ac: torch.tensor
+    # Bc: torch.tensor
+    # Cc: torch.tensor
+    # Dc: torch.tensor
+    x_lin: torch.tensor
+    u_lin: torch.tensor
     dt: float
     
 
 state_vector = stateVector(
     states,
-    np.copy(x0),
+    torch.clone(x0),
     x_units,
     x_ub,
     x_lb,
-    np.copy(x0),
+    torch.clone(x0),
     observed_states,
     mpc_states,
     mpc_inputs,
@@ -247,13 +248,13 @@ state_vector = stateVector(
 
 input_vector = inputVector(
     inputs,
-    np.copy(u0),
+    torch.clone(u0),
     u_units,
     u_ub,
     u_lb,
     udot_ub,
     udot_lb,
-    np.copy(u0),
+    torch.clone(u0),
     mpc_inputs)       
        
 simulation_parameters = simulationParameters(

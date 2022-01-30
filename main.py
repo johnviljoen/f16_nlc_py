@@ -19,10 +19,13 @@ import scipy.io
 from sys import exit
 
 # custom files
-from dynamics.parameters import state_vector, input_vector, simulation_parameters, nlplant
+
+
+from f16 import F16
 
 def main():
     # run through tests or nah
+    f16 = F16()
     import pdb
     pdb.set_trace()
 
