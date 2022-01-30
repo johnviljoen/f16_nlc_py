@@ -11,7 +11,7 @@ import numpy as np
 import ctypes
 from ctypes import CDLL
 
-tables = CDLL('C/hifi_F16_AeroData.so')
+tables = CDLL('dynamics/C/hifi_F16_AeroData.so')
 dtype = torch.float64
 
 class C_lookup():
@@ -57,10 +57,7 @@ class C_lookup():
         tables.hifi_C_lef(alpha_compat, beta_compat, retVal_pointer)
         
         return torch.tensor(retVal, dtype=dtype)
-        
-    def hifi_damping_lef(self, inp):
-        
-        
+        obsv
         ''' This table only accepts alpha up to 45 '''
         inp[0] = torch.clip(inp[0], min=-20., max=45.)
        

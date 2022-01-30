@@ -7,9 +7,11 @@ Created on Mon Nov  8 17:18:47 2021
 """
 
 import torch
-from tables import table_C
+from tables.tables import table_C
 
-from interpn import lookup
+from utils.aerodata_parser import construct_lookup
+
+lookup = construct_lookup('tables/aerodata')
 
 def calc_xdot(xu, lookup_type='Py'):
     

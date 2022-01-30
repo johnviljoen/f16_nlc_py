@@ -15,7 +15,7 @@ from utils import *
 from scipy.signal import cont2discrete
 import matplotlib.pyplot as plt
 
-from parameters import x_lb, x_ub, u_lb, u_ub, udot_lb, udot_ub, SS
+from dynamics.parameters import x_lb, x_ub, u_lb, u_ub, udot_lb, udot_ub, SS
 
 class test_F16(unittest.TestCase, F16):
     

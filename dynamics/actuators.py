@@ -1,7 +1,7 @@
 import ctypes
 import numpy as np
 from numpy import pi
-
+from dynamics.parameters import x_lb, x_ub, u_lb, u_ub
 
 def upd_lef(h, V, coeff, alpha, lef_state_1, lef_state_2, nlplant):
     

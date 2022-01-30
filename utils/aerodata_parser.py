@@ -6,7 +6,7 @@ from scipy.interpolate import interp1d
 def construct_lookup(aerodata_path):
     
     # retrieve aerodata
-    aerodata, ndinfo = parse_aerodata('aerodata')
+    aerodata, ndinfo = parse_aerodata(aerodata_path)
 
     # instantiate ranges
     alpha1 = aerodata['ALPHA1']

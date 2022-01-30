@@ -142,7 +142,6 @@ def train_regressor_3d(dataset):
     return regressor_3d
 
 def train_regressor_1d(dataset):
-    t
     train_dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
     
     regressor_1d = nn.Sequential(nn.Linear(1,512),

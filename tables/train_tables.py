@@ -12,7 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from tables import C_lookup, table_wrap
-from NN import approximator
+from tables.NN import approximator
 
 # In[settings]
 
