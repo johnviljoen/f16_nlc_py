@@ -26,6 +26,9 @@ from f16 import F16
 def main():
     # run through tests or nah
     f16 = F16()
+    #print(f16.calc_xdot(f16.x.values, f16.u.values))
+    
+    print(f16.trim(1000,700,f16.x, f16.u))
     import pdb
     pdb.set_trace()
 

@@ -14,7 +14,7 @@ except:
 xu = state_vector.values
 
 try:
-    from dynamics.nlplant import calc_xdot
+    from dynamics.aircraft import calc_xdot
 except:
     print('FAIL: failed to import calc_xdot from nlplant')
     print('maybe you changed its name?')

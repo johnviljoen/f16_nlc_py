@@ -2,10 +2,11 @@ import ctypes
 import numpy as np
 from numpy import pi
 from dynamics.parameters import x_lb, x_ub, u_lb, u_ub
+from dynamics.aircraft import atmos
 
-def upd_lef(h, V, coeff, alpha, lef_state_1, lef_state_2, nlplant):
+def upd_lef(h, V, alpha, lef_state_1, lef_state_2):
     
-    nlplant.atmos(ctypes.c_double(h),ctypes.c_double(V),ctypes.c_void_p(coeff.ctypes.data))
+    coeff = atmos(h, V)
     atmos_out = coeff[1]/coeff[2] * 9.05
     alpha_deg = alpha*180/pi
     

@@ -1,9 +1,11 @@
+from control.trim import trim
 import torch
 import gym
 import numpy as np
 
 from dynamics.parameters import state_vector, input_vector, simulation_parameters, nlplant
 from dynamics.nlplant import calc_xdot
+from control.trim import trim
 
 class F16(gym.Env):
     
@@ -14,11 +16,11 @@ class F16(gym.Env):
         self.x = state_vector                   # mutable state dataclass
         self.u = input_vector                   # mutable input dataclass
         self.paras = simulation_parameters      # immutable simulation parameters dataclass
-        self.nlplant = nlplant                  # C interface - the heart of the simulation
-
-        self.calc_xdot = calc_xdot
-
-        print(self.calc_xdot(self.x.values))
+        
+        
+        self.calc_xdot = calc_xdot              # wrap the calculate xdot in this object
+        self.trim = trim
+        # print(self.calc_xdot(self.x.values))
         
         # trim and linearise upon initialisation
         #self.x.initial_condition, _ = self.trim(10000, 700)
