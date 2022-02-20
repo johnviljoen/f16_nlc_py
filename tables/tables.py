@@ -5,13 +5,16 @@ Created on Mon Nov  8 17:09:43 2021
 
 @author: johnviljoen
 """
-
+import os
 import torch
 import numpy as np
 import ctypes
 from ctypes import CDLL
+from scipy.interpolate import LinearNDInterpolator
 
+import scipy
 tables = CDLL('dynamics/C/hifi_F16_AeroData.so')
+tables =  CDLL('../f16_pt_29-01-2022/C/hifi_F16_AeroData.so')
 dtype = torch.float64
 
 class C_lookup():
@@ -21,12 +24,14 @@ class C_lookup():
 
     def hifi_C(self, inp):
         
+
         retVal = np.zeros(6)
         retVal_pointer = ctypes.c_void_p(retVal.ctypes.data)
         
         alpha_compat = ctypes.c_double(float(inp[0].numpy()))
         beta_compat = ctypes.c_double(float(inp[1].numpy()))
         el_compat = ctypes.c_double(float(inp[2].numpy()))
+
         
         tables.hifi_C(alpha_compat, beta_compat, el_compat, retVal_pointer)
         
@@ -116,7 +121,95 @@ class C_lookup():
 
 class Py_lookup():
     def __init__(self):
+        # indices lookup
+        self.axes = {}
+        self.axes['ALPHA1'] = torch.tensor(self.read_file("tables/aerodata/ALPHA1.dat"))
+        self.axes['ALPHA2'] = torch.tensor(self.read_file("tables/aerodata/ALPHA2.dat"))
+        self.axes['BETA1'] = torch.tensor(self.read_file("tables/aerodata/BETA1.dat"))
+        self.axes['DH1'] = torch.tensor(self.read_file("tables/aerodata/DH1.dat"))
+        self.axes['DH2'] = torch.tensor(self.read_file("tables/aerodata/DH2.dat"))
+        
+        # tables store the actual data, points are the alpha, beta, dh axes 
+        self.tables = {}
+        self.points = {}
+        self.ndinfo = {}
+        for file in os.listdir("tables/aerodata"):
+            alpha_len = None
+            beta_len = None
+            dh_len = None
+            alpha_fi = None
+            beta_fi = None
+            dh_fi = None
+            if "_ALPHA1" in file:
+                alpha_len = len(self.axes['ALPHA1'])
+                alpha_fi = 'ALPHA1'
+            if "_ALPHA2" in file:
+                alpha_len = len(self.axes['ALPHA2'])
+                alpha_fi = 'ALPHA2'
+            if "_BETA1" in file:
+                beta_len = len(self.axes['BETA1'])
+                beta_fi = 'BETA1'
+            if "_DH1" in file:
+                dh_len = len(self.axes['DH1'])
+                dh_fi = 'DH1'
+            if "_DH2" in file:
+                dh_len = len(self.axes['DH2'])
+                dh_fi = 'DH2'
+
+            temp = [alpha_len, beta_len, dh_len]
+            dims = [i for i in temp if i is not None]
+
+            # 1D tables
+            if len(dims) == 1:
+                self.tables[file] = torch.tensor(self.read_file(f"tables/aerodata/{file}"))
+            
+            # 2D tables
+            elif len(dims) == 2:
+                self.tables[file] = torch.tensor(self.read_file(f"tables/aerodata/{file}")).reshape([dims[0],dims[1]])
+            
+            # 3D tables
+            elif len(dims) == 3:
+                self.tables[file] = torch.tensor(self.read_file(f"tables/aerodata/{file}")).reshape([dims[0],dims[1],dims[2]])
+
+            self.ndinfo[file] = {
+                'alpha_fi': alpha_fi,
+                'beta_fi': beta_fi,
+                'dh_fi': dh_fi
+            }
+        
+        key = 'CN0120_ALPHA1_BETA1_DH2_501.dat'
+        self.tables[key]
+
+        xi = torch.tensor([1.,2.,0.]).numpy()
+        self.interpn(key, xi)
+        import pdb
+        pdb.set_trace()
+
+
+
+    def read_file(self, path):
+        
+        # get the indices of the various tables first
+        with open(path) as f:
+            lines = f.readlines()
+        temp = lines[0][:-1].split()
+        line = [float(i) for i in temp]
+        return line
+
+    def interpn(self, key, xi):
+        
+        points = (
+            self.axes[self.ndinfo[key]['alpha_fi']].numpy(), 
+            self.axes[self.ndinfo[key]['beta_fi']].numpy(),
+            self.axes[self.ndinfo[key]['dh_fi']].numpy())
+        values = self.tables[key].numpy()
+        interp = torch.tensor(scipy.interpolate.interpn(points,values,xi))
+        return interp 
+
+    def hifi_C(self, inp):
         pass
+        
+Py_table = Py_lookup()
 
 table_C = C_lookup()
 class table_wrap():

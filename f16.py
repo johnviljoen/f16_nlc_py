@@ -20,6 +20,15 @@ class F16(gym.Env):
         
         self.calc_xdot = calc_xdot              # wrap the calculate xdot in this object
         self.trim = trim
+
+    def step(self, u):
+        """
+        Function to update the state based on an instantaneous input
+        """
+        xdot = self.calc_xdot(self.x.values, u)[0]
+        dx = xdot*self.paras.dt
+        self.x.values += dx
+        
         # print(self.calc_xdot(self.x.values))
         
         # trim and linearise upon initialisation

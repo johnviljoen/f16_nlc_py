@@ -178,8 +178,8 @@ class stateVector:
         self._vec_mpc_x_lb = torch.tensor(self._mpc_x_lb)[:,None]
         self._vec_mpc_x_ub = torch.tensor(self._mpc_x_ub)[:,None]
 
-    def __call__(self, idx):
-        return self.values[idx]
+    def __call__(self):
+        return self.values
         
     def _get_mpc_x(self):
         return torch.tensor([self.values[i] for i in self._mpc_x_idx])
@@ -211,8 +211,8 @@ class inputVector:
         self._vec_mpc_udot_lb = torch.tensor(self._mpc_udot_lb).unsqueeze(0).T
         self._vec_mpc_udot_ub = torch.tensor(self._mpc_udot_ub).unsqueeze(0).T
     
-    def __call__(self, idx):
-        return self.values[idx]
+    def __call__(self):
+        return self.values
         
     def _get_mpc_u(self):
         return torch.tensor([self.values[i] for i in self._mpc_u_idx])

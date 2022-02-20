@@ -17,6 +17,7 @@ import osqp
 import ctypes
 import scipy.io
 from sys import exit
+import torch
 
 # custom files
 
@@ -27,8 +28,16 @@ def main():
     # run through tests or nah
     f16 = F16()
     #print(f16.calc_xdot(f16.x.values, f16.u.values))
-    
-    print(f16.trim(1000,700,f16.x, f16.u))
+    f16.step(f16.u.values) 
+    #print(f16.trim(1000,700,f16.x, f16.u))
+
+    """ Run simulation for 0.5 seconds """
+    out = torch.zeros([500,18])
+    for i in range(500):
+        print(i)
+        f16.step(f16.u.values)
+        out[i,:] = f16.x.values
+
     import pdb
     pdb.set_trace()
 

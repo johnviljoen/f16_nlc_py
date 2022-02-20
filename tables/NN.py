@@ -9,7 +9,7 @@ Created on Sat Nov 13 12:50:24 2021
 import torch.nn as nn
 import torch
 
-from tables import C_lookup
+from tables.tables import C_lookup
 
 C = C_lookup()
 

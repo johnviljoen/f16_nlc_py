@@ -11,7 +11,7 @@ from tqdm import tqdm
 import numpy as np
 import matplotlib.pyplot as plt
 
-from tables import C_lookup, table_wrap
+from tables.tables import C_lookup, table_wrap
 from tables.NN import approximator
 
 # In[settings]
@@ -182,7 +182,7 @@ if __name__ == '__main__':
     
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
     dtype = torch.float32
-    coeff_lim = torch.load('NNs/lookup_table_limits.pt')
+    coeff_lim = torch.load('tables/NNs/lookup_table_limits.pt')
     # coeff = 'Cxq'
     LR = 1e-3
     train_datapoints = 80000
