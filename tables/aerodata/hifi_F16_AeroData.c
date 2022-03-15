@@ -1,16 +1,15 @@
-//#include"mex.h"
 
 #include"mexndinterp.c"
 #include <stdio.h>
 #include <stdlib.h>
 
+
 double	*getALPHA1(){
-FILE *fp = fopen("C/ALPHA1.dat","r");
+FILE *fp = fopen("tables/aerodata/ALPHA1.dat","r");
 int i;
 double *alpha1,data;
 
 if(fp==NULL)
-	//mexErrMsgTxt("Can't find file ALPHA1.dat");
 	printf("Can't find file ALPHA1.dat");
 
 alpha1 = doubleVector(20);
@@ -26,12 +25,11 @@ return(alpha1);
 
 
 double	*getALPHA2(){
-FILE *fp = fopen("C/ALPHA2.dat","r");
+FILE *fp = fopen("tables/aerodata/ALPHA2.dat","r");
 int i;
 double *alpha2,data;
 
 if(fp==NULL)
-	//mexErrMsgTxt("Can't find file ALPHA2.dat");
 	printf("Can't find file ALPHA2.dat");
 
 alpha2 = doubleVector(14);
@@ -47,13 +45,13 @@ return(alpha2);
 
 
 double	*getBETA1(){
-FILE *fp = fopen("C/BETA1.dat","r");
+FILE *fp = fopen("tables/aerodata/BETA1.dat","r");
 int i;
 double *beta1,data;
 
 if(fp==NULL)
-	//mexErrMsgTxt("Can't find file BETA1.dat");
 	printf("Can't find file BETA1.dat");
+
 beta1 = doubleVector(19);
 
 for(i=0;i<19;i++){
@@ -67,13 +65,13 @@ return(beta1);
 
 
 double	*getDH1(){
-FILE *fp = fopen("C/DH1.dat","r");
+FILE *fp = fopen("tables/aerodata/DH1.dat","r");
 int i;
 double *dh1,data;
 
 if(fp==NULL)
-	//mexErrMsgTxt("Can't find file DH1.dat");
 	printf("Can't find file DH1.dat");
+
 dh1 = doubleVector(5);
 
 for(i=0;i<5;i++){
@@ -87,13 +85,13 @@ return(dh1);
 	
 
 double	*getDH2(){
-FILE *fp = fopen("C/DH2.dat","r");
+FILE *fp = fopen("tables/aerodata/DH2.dat","r");
 int i;
 double *dh2,data;
 
 if(fp==NULL)
-	//mexErrMsgTxt("Can't find file DH2.dat");
 	printf("Can't find file DH2.dat");
+
 dh2 = doubleVector(3);
 
 for(i=0;i<3;i++){
@@ -133,10 +131,10 @@ double _Cx(double alpha,double beta,double dele){
 		X[0] = getALPHA1();
 		X[1] = getBETA1();
 		X[2] = getDH1();
-		fp = fopen("C/CX0120_ALPHA1_BETA1_DH1_201.dat","r");
+		fp = fopen("tables/aerodata/CX0120_ALPHA1_BETA1_DH1_201.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CX0120_ALPHA1_BETA1_DH1_201.dat in current directory");
-			printf("Can't find file CX0120_ALPHA1_BETA1_DH1_201.dat");
+			printf("Cannot find file CX0120_ALPHA1_BETA1_DH1_201.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -180,10 +178,10 @@ double _Cz(double alpha,double beta, double dele){
 		X[1] = getBETA1();
 		X[2] = getDH1();
 
-		fp = fopen("C/CZ0120_ALPHA1_BETA1_DH1_301.dat","r");
+		fp = fopen("tables/aerodata/CZ0120_ALPHA1_BETA1_DH1_301.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CZ0120_ALPHA1_BETA1_DH1_301.dat in current directory");
-			printf("Can't find file CZ0120....dat");
+			printf("Cannot find file CZ0120_ALPHA1_BETA1_DH1_301.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -224,10 +222,10 @@ double _Cm(double alpha,double beta,double dele){
 		X[0] = getALPHA1();
 		X[1] = getBETA1();
 		X[2] = getDH1();
-		fp = fopen("C/CM0120_ALPHA1_BETA1_DH1_101.dat","r");
+		fp = fopen("tables/aerodata/CM0120_ALPHA1_BETA1_DH1_101.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CM0120_ALPHA1_BETA1_DH1_101.dat in current directory");
-			printf("Can't find file CM0120....dat");
+			printf("Cannot find file CM0120_ALPHA1_BETA1_DH1_101.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -267,10 +265,10 @@ double _Cy(double alpha,double beta){
 
 		X[0] = getALPHA1();
 		X[1] = getBETA1();
-		fp = fopen("C/CY0320_ALPHA1_BETA1_401.dat","r");
+		fp = fopen("tables/aerodata/CY0320_ALPHA1_BETA1_401.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CY0320_ALPHA1_BETA1_401.dat in current directory");
-			printf("Can't find file CY0320....dat");
+			printf("Cannot find file CY0320_ALPHA1_BETA1_401.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -311,10 +309,10 @@ double _Cn(double alpha, double beta, double dele){
 		X[0] = getALPHA1();
 		X[1] = getBETA1();
 		X[2] = getDH2();
-		fp = fopen("C/CN0120_ALPHA1_BETA1_DH2_501.dat","r");
+		fp = fopen("tables/aerodata/CN0120_ALPHA1_BETA1_DH2_501.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CN0120_ALPHA1_BETA1_DH2_501.dat in current directory");
-			printf("Can't find file CN0120....dat");
+			printf("Cannot find file CN0120_ALPHA1_BETA1_DH2_501.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -356,10 +354,10 @@ double _Cl(double alpha, double beta,double dele){
 		X[0] = getALPHA1();
 		X[1] = getBETA1();
 		X[2] = getDH2();
-		fp = fopen("C/CL0120_ALPHA1_BETA1_DH2_601.dat","r");
+		fp = fopen("tables/aerodata/CL0120_ALPHA1_BETA1_DH2_601.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CL0120_ALPHA1_BETA1_DH2_601.dat in current directory");
-			printf("Can't find file CL0120....dat");
+			printf("Cannot find file CL0120_ALPHA1_BETA1_DH2_601.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -399,10 +397,10 @@ double _Cx_lef(double alpha,double beta){
 
 		X[0] = getALPHA2();
 		X[1] = getBETA1();
-		fp = fopen("C/CX0820_ALPHA2_BETA1_202.dat","r");
+		fp = fopen("tables/aerodata/CX0820_ALPHA2_BETA1_202.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CX0820_ALPHA2_BETA1_202.dat in current directory");
-			printf("Can't find file CX0820.dat");
+			printf("Cannot find file CX0820_ALPHA2_BETA1_202.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -441,10 +439,10 @@ double _Cz_lef(double alpha,double beta){
 
 		X[0] = getALPHA2();
 		X[1] = getBETA1();
-		fp = fopen("C/CZ0820_ALPHA2_BETA1_302.dat","r");
+		fp = fopen("tables/aerodata/CZ0820_ALPHA2_BETA1_302.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CZ0820_ALPHA2_BETA1_302.dat in current directory");
-			printf("Can't find file CZ0820.dat");
+			printf("Cannot find file CZ0820_ALPHA2_BETA1_302.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -483,10 +481,10 @@ double _Cm_lef(double alpha,double beta){
 
 		X[0] = getALPHA2();
 		X[1] = getBETA1();
-		fp = fopen("C/CM0820_ALPHA2_BETA1_102.dat","r");
+		fp = fopen("tables/aerodata/CM0820_ALPHA2_BETA1_102.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CM0820_ALPHA2_BETA1_102.dat in current directory");
-			printf("Can't find file CM0820.....dat");
+			printf("Cannot find file CM0820_ALPHA2_BETA1_102.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -525,10 +523,10 @@ double _Cy_lef(double alpha,double beta){
 
 		X[0] = getALPHA2();
 		X[1] = getBETA1();
-		fp = fopen("C/CY0820_ALPHA2_BETA1_402.dat","r");
+		fp = fopen("tables/aerodata/CY0820_ALPHA2_BETA1_402.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CY0820_ALPHA2_BETA1_402.dat in current directory");
-			printf("Can't find file CY0820....dat");
+			printf("Cannot find file CY0820_ALPHA2_BETA1_402.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -567,10 +565,10 @@ double _Cn_lef(double alpha,double beta){
 
 		X[0] = getALPHA2();
 		X[1] = getBETA1();
-		fp = fopen("C/CN0820_ALPHA2_BETA1_502.dat","r");
+		fp = fopen("tables/aerodata/CN0820_ALPHA2_BETA1_502.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CN0820_ALPHA2_BETA1_502.dat in current directory");
-			printf("Can't find file CN0820....dat");
+			printf("Cannot find file CN0820_ALPHA2_BETA1_502.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -609,10 +607,10 @@ double _Cl_lef(double alpha,double beta){
 
 		X[0] = getALPHA2();
 		X[1] = getBETA1();
-		fp = fopen("C/CL0820_ALPHA2_BETA1_602.dat","r");
+		fp = fopen("tables/aerodata/CL0820_ALPHA2_BETA1_602.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CL0820_ALPHA2_BETA1_602.dat in current directory");
-			printf("Can't find file CL0820....dat");
+			printf("Cannot find file CL0820_ALPHA2_BETA1_602.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -649,10 +647,10 @@ double _CXq(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA1();
-		fp = fopen("C/CX1120_ALPHA1_204.dat","r");
+		fp = fopen("tables/aerodata/CX1120_ALPHA1_204.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CX1120_ALPHA1_204.dat in current directory");
-			printf("Can't find file CX1120....dat");
+			printf("Cannot find file CX1120_ALPHA1_204.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -688,10 +686,10 @@ double _CZq(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA1();
-		fp = fopen("C/CZ1120_ALPHA1_304.dat","r");
+		fp = fopen("tables/aerodata/CZ1120_ALPHA1_304.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CZ1120_ALPHA1_304.dat in current directory");
-			printf("Can't find file CZ1120.dat");
+			printf("Cannot find file CZ1120_ALPHA1_304.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -727,10 +725,10 @@ double _CMq(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA1();
-		fp = fopen("C/CM1120_ALPHA1_104.dat","r");
+		fp = fopen("tables/aerodata/CM1120_ALPHA1_104.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CM1120_ALPHA1_104.dat in current directory");
-			printf("Can't find file CM1120....dat");
+			printf("Cannot find file CM1120_ALPHA1_104.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -766,10 +764,10 @@ double _CYp(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA1();
-		fp = fopen("C/CY1220_ALPHA1_408.dat","r");
+		fp = fopen("tables/aerodata/CY1220_ALPHA1_408.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CY1220_ALPHA1_408.dat in current directory");
-			printf("Can't find file CY1220....dat");
+			printf("Cannot find file CY1220_ALPHA1_408.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -805,10 +803,10 @@ double _CYr(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA1();
-		fp = fopen("C/CY1320_ALPHA1_406.dat","r");
+		fp = fopen("tables/aerodata/CY1320_ALPHA1_406.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CY1320_ALPHA1_406.dat in current directory");
-			printf("Can't find file CY1320....dat");
+			printf("Cannot find file CY1320_ALPHA1_406.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -844,10 +842,10 @@ double _CNr(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA1();
-		fp = fopen("C/CN1320_ALPHA1_506.dat","r");
+		fp = fopen("tables/aerodata/CN1320_ALPHA1_506.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CN1320_ALPHA1_506.dat in current directory");
-			printf("Can't find file CN1320....dat");
+			printf("Cannot find file CN1320_ALPHA1_506.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -883,10 +881,10 @@ double _CNp(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA1();
-		fp = fopen("C/CN1220_ALPHA1_508.dat","r");
+		fp = fopen("tables/aerodata/CN1220_ALPHA1_508.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CN1220_ALPHA1_508.dat in current directory");
-			printf("Can't find file CN1220....dat");
+			printf("Cannot find file CN1220_ALPHA1_508.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -922,10 +920,10 @@ double _CLp(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA1();
-		fp = fopen("C/CL1220_ALPHA1_608.dat","r");
+		fp = fopen("CL1220_ALPHA1_608.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CL1220_ALPHA1_608.dat in current directory");
-			printf("Can't find file CL1220....dat");
+			printf("Cannot find file CL1220_ALPHA1_608.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -961,10 +959,10 @@ double _CLr(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA1();
-		fp = fopen("C/CL1320_ALPHA1_606.dat","r");
+		fp = fopen("tables/aerodata/CL1320_ALPHA1_606.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CL1320_ALPHA1_606.dat in current directory");
-            printf("Can't find file CL1320...dat");
+			printf("Cannot find file CL1320_ALPHA1_606.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1000,10 +998,10 @@ double _delta_CXq_lef(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA2();
-		fp = fopen("C/CX1420_ALPHA2_205.dat","r");
+		fp = fopen("tables/aerodata/CX1420_ALPHA2_205.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CX1420_ALPHA2_205.dat in current directory");
-			printf("Can't find file CX1420....dat");
+			printf("Cannot find file CX1420_ALPHA2_205.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1039,10 +1037,10 @@ double _delta_CYr_lef(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA2();
-		fp = fopen("C/CY1620_ALPHA2_407.dat","r");
+		fp = fopen("tables/aerodata/CY1620_ALPHA2_407.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CY1620_ALPHA2_407.dat in current directory");
-			printf("Can't find file CY1620....dat");
+			printf("Cannot find file CY1620_ALPHA2_407.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1078,10 +1076,10 @@ double _delta_CYp_lef(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA2();
-		fp = fopen("C/CY1520_ALPHA2_409.dat","r");
+		fp = fopen("tables/aerodata/CY1520_ALPHA2_409.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CY1520_ALPHA2_409.dat in current directory");
-			printf("Can't find file CY1520....dat");
+			printf("Cannot find file CY1520_ALPHA2_409.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1117,10 +1115,10 @@ double _delta_CZq_lef(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA2();
-		fp = fopen("C/CZ1420_ALPHA2_305.dat","r");
+		fp = fopen("tables/aerodata/CZ1420_ALPHA2_305.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CZ1420_ALPHA2_305.dat in current directory");
-			printf("Can't find file CZ1420....dat");
+			printf("Cannot find file CZ1420_ALPHA2_305.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1156,10 +1154,10 @@ double _delta_CLr_lef(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA2();
-		fp = fopen("C/CL1620_ALPHA2_607.dat","r");
+		fp = fopen("tables/aerodata/CL1620_ALPHA2_607.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CL1620_ALPHA2_607.dat in current directory");
-			printf("Can't find file CL1620....dat");
+			printf("Cannot find file CL1620_ALPHA2_607.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1195,10 +1193,10 @@ double _delta_CLp_lef(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA2();
-		fp = fopen("C/CL1520_ALPHA2_609.dat","r");
+		fp = fopen("tables/aerodata/CL1520_ALPHA2_609.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CL1520_ALPHA2_609.dat in current directory");
-			printf("Can't find file CL1520....dat");
+			printf("Cannot find file CL1520_ALPHA2_609.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1234,10 +1232,10 @@ double _delta_CMq_lef(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA2();
-		fp = fopen("C/CM1420_ALPHA2_105.dat","r");
+		fp = fopen("tables/aerodata/CM1420_ALPHA2_105.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CM1420_ALPHA2_105.dat in current directory");
-			printf("Can't find file CM1420....dat");
+			printf("Cannot find file CM1420_ALPHA2_105.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1273,10 +1271,10 @@ double _delta_CNr_lef(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA2();
-		fp = fopen("C/CN1620_ALPHA2_507.dat","r");
+		fp = fopen("tables/aerodata/CN1620_ALPHA2_507.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CN1620_ALPHA2_507.dat in current directory");
-			printf("Can't find file CN1620....dat");
+			printf("Cannot find file CN1620_ALPHA2_507.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1312,10 +1310,10 @@ double _delta_CNp_lef(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA2();
-		fp = fopen("C/CN1520_ALPHA2_509.dat","r");
+		fp = fopen("tables/aerodata/CN1520_ALPHA2_509.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CN1520_ALPHA2_509.dat in current directory");
-			printf("Can't find file CN1520....dat");
+			printf("Cannot find file CN1520_ALPHA2_509.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1353,10 +1351,10 @@ double _Cy_r30(double alpha, double beta){
 
 		X[0] = getALPHA1();
 		X[1] = getBETA1();
-		fp = fopen("C/CY0720_ALPHA1_BETA1_405.dat","r");
+		fp = fopen("tables/aerodata/CY0720_ALPHA1_BETA1_405.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CY0720_ALPHA1_BETA1_405.dat in current directory");
-			printf("Can't find file CY0720....dat");
+			printf("Cannot find file CY0720_ALPHA1_BETA1_405.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1395,10 +1393,10 @@ double _Cn_r30(double alpha, double beta){
 
 		X[0] = getALPHA1();
 		X[1] = getBETA1();
-		fp = fopen("C/CN0720_ALPHA1_BETA1_503.dat","r");
+		fp = fopen("tables/aerodata/CN0720_ALPHA1_BETA1_503.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CN0720_ALPHA1_BETA1_503.dat in current directory");
-			printf("Can't find file CN0720....dat");
+			printf("Cannot find file CN0720_ALPHA1_BETA1_503.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1437,10 +1435,10 @@ double _Cl_r30(double alpha, double beta){
 
 		X[0] = getALPHA1();
 		X[1] = getBETA1();
-		fp = fopen("C/CL0720_ALPHA1_BETA1_603.dat","r");
+		fp = fopen("tables/aerodata/CL0720_ALPHA1_BETA1_603.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CL0720_ALPHA1_BETA1_603.dat in current directory");
-			printf("Can't find file CL0720....dat");
+			printf("Cannot find file CL0720_ALPHA1_BETA1_603.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1479,10 +1477,10 @@ double _Cy_a20(double alpha, double beta){
 
 		X[0] = getALPHA1();
 		X[1] = getBETA1();
-		fp = fopen("C/CY0620_ALPHA1_BETA1_403.dat","r");
+		fp = fopen("tables/aerodata/CY0620_ALPHA1_BETA1_403.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CY0620_ALPHA1_BETA1_403.dat in current directory");
-			printf("Can't find file CY0620....dat");
+			printf("Cannot find file CY0620_ALPHA1_BETA1_403.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1521,10 +1519,10 @@ double _Cy_a20_lef(double alpha, double beta){
 
 		X[0] = getALPHA2();
 		X[1] = getBETA1();
-		fp = fopen("C/CY0920_ALPHA2_BETA1_404.dat","r");
+		fp = fopen("tables/aerodata/CY0920_ALPHA2_BETA1_404.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CY0920_ALPHA2_BETA1_404.dat in current directory");
-			printf("Can't find file CY0920....dat");
+			printf("Cannot find file CY0920_ALPHA2_BETA1_404.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1563,10 +1561,10 @@ double _Cn_a20(double alpha, double beta){
 
 		X[0] = getALPHA1();
 		X[1] = getBETA1();
-		fp = fopen("C/CN0620_ALPHA1_BETA1_504.dat","r");
+		fp = fopen("tables/aerodata/CN0620_ALPHA1_BETA1_504.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CN0620_ALPHA1_BETA1_504.dat in current directory");
-			printf("Can't find file CN0620....dat");
+			printf("Cannot find file CN0620_ALPHA1_BETA1_504.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1605,10 +1603,10 @@ double _Cn_a20_lef(double alpha, double beta){
 
 		X[0] = getALPHA2();
 		X[1] = getBETA1();
-		fp = fopen("C/CN0920_ALPHA2_BETA1_505.dat","r");
+		fp = fopen("tables/aerodata/CN0920_ALPHA2_BETA1_505.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CN0920_ALPHA2_BETA1_505.dat in current directory");
-			printf("Can't find file CN0920....dat");
+			printf("Cannot find file CN0920_ALPHA2_BETA1_505.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1647,10 +1645,10 @@ double _Cl_a20(double alpha, double beta){
 
 		X[0] = getALPHA1();
 		X[1] = getBETA1();
-		fp = fopen("C/CL0620_ALPHA1_BETA1_604.dat","r");
+		fp = fopen("tables/aerodata/CL0620_ALPHA1_BETA1_604.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CL0620_ALPHA1_BETA1_604.dat in current directory");
-			printf("Can't find file CL0620....dat");
+			printf("Cannot find file CL0620_ALPHA1_BETA1_604.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1688,10 +1686,10 @@ double _Cl_a20_lef(double alpha, double beta){
 
 		X[0] = getALPHA2();
 		X[1] = getBETA1();
-		fp = fopen("C/CL0920_ALPHA2_BETA1_605.dat","r");
+		fp = fopen("tables/aerodata/CL0920_ALPHA2_BETA1_605.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CL0920_ALPHA2_BETA1_605.dat in current directory");
-			printf("Can't find file CL0920....dat");
+			printf("Cannot find file CL0920_ALPHA2_BETA1_605.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1728,10 +1726,10 @@ double _delta_CNbeta(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA1();
-		fp = fopen("C/CN9999_ALPHA1_brett.dat","r");
+		fp = fopen("tables/aerodata/CN9999_ALPHA1_brett.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CN9999_ALPHA1_brett.dat in current directory");
-			printf("Can't find file CN9999....dat");
+			printf("Cannot find file CN9999_ALPHA1_brett.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1767,10 +1765,10 @@ double _delta_CLbeta(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA1();
-		fp = fopen("C/CL9999_ALPHA1_brett.dat","r");
+		fp = fopen("tables/aerodata/CL9999_ALPHA1_brett.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CL9999_ALPHA1_brett.dat in current directory");
-			printf("Can't find file CL9999.....dat");
+			printf("Cannot find file CL9999_ALPHA1_brett.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1806,10 +1804,10 @@ double _delta_Cm(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA1();
-		fp = fopen("C/CM9999_ALPHA1_brett.dat","r");
+		fp = fopen("tables/aerodata/CM9999_ALPHA1_brett.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file CM9999_ALPHA1_brett.dat in current directory");
-			printf("Can't find file CM9999....dat");
+			printf("Cannot find file CM9999_ALPHA1_brett.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
@@ -1845,10 +1843,10 @@ double _eta_el(double el){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getDH1();
-		fp = fopen("C/ETA_DH1_brett.dat","r");
+		fp = fopen("tables/aerodata/ETA_DH1_brett.dat","r");
 		if(fp==(FILE*) NULL)
-			//mexErrMsgTxt("Cannot find file ETA_DH1_brett.dat in current directory");
-			printf("Can't find file ETA.....dat");
+			printf("Cannot find file ETA_DH1_brett.dat in current directory");
+
 		for(i=0;i<FILESIZE;i++){
 			fscanf(fp,"%lf",&data);
 			DATA[i] = data;
