@@ -1,43 +1,32 @@
-# script to test the functionality of the hifi_F16_AeroData binary
-# result: It works! Dont touch it again!
+"""
+This script wraps the C shared library .so file
+
+NOTE: This script MUST be run from the directory above this one, as the C file
+expects to reach aerodata through the following path:
+
+    tables/aerodata
+
+If this script is run from this directory a segmentation fault WILL occur.
+
+NOTE: This script could be further accelerated by retaining prior pointers
+to prior xdots from prior lookups, but this has not yet been implemented.
+"""
 
 import torch
 import ctypes
 import os
 import numpy as np
 import sys
+
 aerodata_path = "/home/jovi/Documents/Code/f16_pt/tables/aerodata"
-sys.path.append(aerodata_path)
 
 dtype = torch.double
-inp = torch.tensor([1.0,0.1], dtype=dtype)
-
-inp1 = inp[0].numpy()
-inp2 = inp[1].numpy()
 tables = ctypes.CDLL(aerodata_path + "/hifi_F16_AeroData.so")
-
-out = np.zeros(6)
-out_ptr = ctypes.c_void_p(out.ctypes.data)
-#C_so.hifi_C_lef(ct.c_double(inp1), ct.c_double(inp2), out_ptr)
-
-#def hifi_C_lef(alpha, beta):
-#    alpha_compat = ct.c_double(alpha.numpy())
-#    beta_compat = ct.c_double(beta.numpy())
-#    out = np.zeros(6)
-#    out_ptr = ct.c_void_p(out.ctypes.data)
-#    C_so.hifi_C_lef(alpha_compat, beta_compat, out_ptr)
-#    return out
 
 class C_lookup():
 
     def __init__(self):
-
-        inp3 = torch.tensor([0.0,0.0,0.0])
-        inp2 = torch.tensor([0.,0.])
-        #inp3 = np.array([0.,0.,0.])
-        #inp2 = np.array([1.,5.])
-        self.hifi_C_lef(inp2)
-        #self.hifi_C(inp3)
+        pass
 
     def hifi_C(self, inp):
         
@@ -137,6 +126,3 @@ class C_lookup():
         return torch.tensor(retVal, dtype=dtype)
 
 c_lookup = C_lookup()
-print(out)
-import pdb
-pdb.set_trace()

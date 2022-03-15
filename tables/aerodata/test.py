@@ -17,13 +17,6 @@ out = np.zeros(6)
 out_ptr = ctypes.c_void_p(out.ctypes.data)
 #C_so.hifi_C_lef(ct.c_double(inp1), ct.c_double(inp2), out_ptr)
 
-#def hifi_C_lef(alpha, beta):
-#    alpha_compat = ct.c_double(alpha.numpy())
-#    beta_compat = ct.c_double(beta.numpy())
-#    out = np.zeros(6)
-#    out_ptr = ct.c_void_p(out.ctypes.data)
-#    C_so.hifi_C_lef(alpha_compat, beta_compat, out_ptr)
-#    return out
 
 class C_lookup():
 
