@@ -95,10 +95,21 @@ hifi_other_coeffs_fnames = [
 def test_3d(points, values):
     pass
 
+def test_2d(points, values, table, table_output_idx):
+    for i, point1 in enumerate(points[0]):
+        for j, point2 in enumerate(points[1]):
+            delta = values[i,j] - table(torch.tensor([point1,point2]))
+            delta = delta[table_output_idx]
+            import pdb
+            pdb.set_trace()
+
 def test_1d(points, values, table, table_output_idx):
     for i, point in enumerate(points):
         # i is the alpha index
-        print((values[i] - table(points[i].unsqueeze(0)))[table_output_idx])
+        delta = values[i] - table(points[i].unsqueeze(0))
+        delta = delta[table_output_idx] # selects the correct delta
+        if delta > 1e-06:
+            print(f'moderate discrepancy detected: {delta}')
 
 def get_c_lookup(fname):
     
@@ -150,9 +161,11 @@ for file in os.listdir("tables/aerodata"):
             table, table_outputs, table_output_idx = get_c_lookup(file)
             
             if len(points) == 3:
+                # a list of 3 tensors indicates a 3d table
                 pass
             elif len(points) == 2:
-                pass
+                # a list of 2 tensors indicates a 2d table
+                test_2d(points, values, table, table_output_idx)
             else:
                 # This is for non 2d or 3d -> 1d tables
                 test_1d(points, values, table, table_output_idx)
