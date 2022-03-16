@@ -21,7 +21,7 @@ inp1 = torch.tensor([1.0])
 inp2 = torch.tensor([1.0,2.0])
 inp3 = torch.tensor([1.0,2.0,3.0])
 
-#print(cl.hifi_C_lef(inp2))
+print(cl.hifi_C_lef(inp2))
 
 """
 1.
@@ -41,52 +41,89 @@ def test_1d(points, values):
         # i is the alpha index
         values[i] # - cl
 
-def get_c_lookup(coeff):
-    if coeff in ['Cx', 'Cz', 'Cm', 'Cy', 'Cn', 'Cl']:
-        table = cl.hifi_C
-    elif coeff in ['Cxq', 'Cyr', 'Cyp', 'Czq', 'Clr', 'Clp', 'Cmq', 'Cnr', 'Cnp']:
-        table = cl.hifi_damping
-    elif coeff in ['delta_Cx_lef', 'delta_Cz_lef', 'delta_Cm_lef', 'delta_Cy_lef', 'delta_Cn_lef', 'delta_Cl_lef']:
-        table = cl.hifi_C_lef
-    elif coeff in ['delta_Cxq_lef', 'delta_Cyr_lef', 'delta_Cyp_lef', 'delta_Czq_lef', 'delta_Clr_lef', 'delta_Clp_lef', 'delta_Cmq_lef', 'delta_Cnr_lef','delta_Cnp_lef']:
-        table = cl.hifi_damping_lef
-    elif coeff in ['delta_Cy_r30', 'delta_Cn_r30', 'delta_Cl_r30']:
-        table = cl.hifi_rudder
-    elif coeff in ['delta_Cy_a20', 'delta_Cy_a20_lef', 'delta_Cn_a20', 'delta_Cn_a20_lef', 'delta_Cl_a20', 'delta_Cl_a20_lef']:
-        table = cl.hifi_ailerons
-    elif coeff in ['delta_Cnbeta', 'delta_Clbeta', 'delta_Cm', 'eta_el', 'delta_Cm_ds']:
-        table = cl.hifi_other_coeffs
-    return table
-
-def get_coeff(fname):
+def get_c_lookup(fname):
     hifi_C_fnames = [
-        'CX0120_ALPHA1_BETA1_DH1_201.dat',
-        'CZ0120_ALPHA1_BETA1_DH1_301.dat',
-        'CM0120_ALPHA1_BETA1_DH1_101.dat',
-        'CY0320_ALPHA1_BETA1_401.dat',
-        'CN0120_ALPHA1_BETA1_DH2_501.dat',
-        'CL0120_ALPHA1_BETA1_DH2_601'
+        'CX0120_ALPHA1_BETA1_DH1_201.dat', # Cx
+        'CZ0120_ALPHA1_BETA1_DH1_301.dat', # Cz
+        'CM0120_ALPHA1_BETA1_DH1_101.dat', # Cm
+        'CY0320_ALPHA1_BETA1_401.dat',     # Cy
+        'CN0120_ALPHA1_BETA1_DH2_501.dat', # Cn
+        'CL0120_ALPHA1_BETA1_DH2_601'      # Cl
     ]
     hifi_damping_fnames = [
-    
+        'CX1120_ALPHA1_204.dat', # CXq
+        'CY1320_ALPHA1_406.dat', # CYr
+        'CY1220_ALPHA1_408.dat', # CYp
+        'CZ1120_ALPHA1_304.dat', # CZq
+        'CL1320_ALPHA1_606.dat', # CLr
+        'CL1220_ALPHA1_608.dat', # CLp
+        'CM1120_ALPHA1_104.dat', # CMq
+        'CN1320_ALPHA1_506.dat', # CNr
+        'CN1220_ALPHA1_508.dat', # CNp
     ]
     hifi_C_lef_fnames = [
-        'CX0820_ALPHA2_BETA1_202.dat',
-        'CZ0820_ALPHA2_BETA1_302.dat',
-        'CM0820_ALPHA2_BETA1_102.dat',
-        'CY0820_ALPHA2_BETA1_402.dat',
-        'CN0820_ALPHA2_BETA1_502.dat',
-        'CL0820_ALPHA2_BETA1_602.dat',
+        'CX0820_ALPHA2_BETA1_202.dat', # Cx_lef
+        'CZ0820_ALPHA2_BETA1_302.dat', # Cz_lef
+        'CM0820_ALPHA2_BETA1_102.dat', # Cm_lef
+        'CY0820_ALPHA2_BETA1_402.dat', # Cy_lef
+        'CN0820_ALPHA2_BETA1_502.dat', # Cn_lef
+        'CL0820_ALPHA2_BETA1_602.dat' # Cl_lef
     ]
-    hifi_damping_lef_fnames = []
-    hifi_rudder_fnames = []
-    hifi_ailerons_fnames = []
-    hifi_other_coeffs_fnames = []
+    hifi_damping_lef_fnames = [
+        'CX1420_ALPHA2_205.dat', # delta_CXq_lef
+        'CY1620_ALPHA2_407.dat', # delta_CYr_lef
+        'CY1520_ALPHA2_409.dat', # delta_CYp_lef
+        'CZ1420_ALPHA2_305.dat', # delta_CZq_lef
+        'CL1620_ALPHA2_607.dat', # delta_CLr_lef
+        'CL1520_ALPHA2_609.dat', # delta_CLp_lef
+        'CM1420_ALPHA2_105.dat', # delta_CMq_lef
+        'CN1620_ALPHA2_507.dat', # delta_CNr_lef
+        'CN1520_ALPHA2_509.dat' # delta_CNp_lef
+    ]
+    hifi_rudder_fnames = [
+        'CY0720_ALPHA1_BETA1_405.dat', # Cy_r30
+        'CN0720_ALPHA1_BETA1_503.dat', # Cn_r30
+        'CL0720_ALPHA1_BETA1_603.dat' # Cl_r30
+    ]
+    hifi_ailerons_fnames = [
+        'CY0620_ALPHA1_BETA1_403.dat', # Cy_a20
+        'CY0920_ALPHA2_BETA1_404.dat', # Cy_a20_lef
+        'CN0620_ALPHA1_BETA1_504.dat', # Cn_a20
+        'CN0920_ALPHA2_BETA1_505.dat', # Cn_a20_lef
+        'CL0620_ALPHA1_BETA1_604.dat', # Cl_a20
+        'CL0920_ALPHA2_BETA1_605.dat' # Cl_a20_lef
+    ]
+    hifi_other_coeffs_fnames = [
+        'CN9999_ALPHA1_brett.dat', # delta_CNbeta
+        'CL9999_ALPHA1_brett.dat', # delta_CLbeta
+        'CM9999_ALPHA1_brett.dat', # delta_Cm
+        'ETA_DH1_brett.dat', # eta_el
+        'DOES_NOT_EXIST.dat', # ignore deep-stall regime, delta_Cm_ds = 0
+    ]
 
     if fname in hifi_C_fnames:
         table = cl.hifi_C
+
     elif fname in hifi_damping_fnames:
-        pass
+        table = cl.hifi_damping
+
+    elif fname in hifi_C_lef_fnames:
+        table = cl.hifi_C_lef
+
+    elif fname in hifi_damping_lef_fnames:
+        table = cl.hifi_damping_lef
+
+    elif fname in hifi_rudder_fnames:
+        table = cl.hifi_rudder
+
+    elif fname in hifi_ailerons_fnames:
+        table = cl.hifi_ailerons
+
+    elif fname in hifi_other_coeffs_fnames:
+        table = cl.hifi_other_coeffs
+
+    return table 
+    
 
 print("reading aerodata...")
 i = 0

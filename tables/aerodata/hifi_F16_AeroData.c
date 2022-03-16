@@ -920,7 +920,7 @@ double _CLp(double alpha){
 		X = (double **) malloc(nDimension*sizeof(double*));
 
 		X[0] = getALPHA1();
-		fp = fopen("CL1220_ALPHA1_608.dat","r");
+		fp = fopen("tables/aerodata/CL1220_ALPHA1_608.dat","r");
 		if(fp==(FILE*) NULL)
 			printf("Cannot find file CL1220_ALPHA1_608.dat in current directory");
 
