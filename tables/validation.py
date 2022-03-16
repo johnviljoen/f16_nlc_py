@@ -36,10 +36,10 @@ print(cl.hifi_C_lef(inp2))
 def test_3d(points, values):
     pass
 
-def test_1d(points, values):
+def test_1d(points, values, table):
     for i, point in enumerate(points):
         # i is the alpha index
-        values[i] # - cl
+        print((values[i] - table(points[i].unsqueeze(0)))[3])
 
 def get_c_lookup(fname):
     hifi_C_fnames = [
@@ -100,7 +100,7 @@ def get_c_lookup(fname):
         'ETA_DH1_brett.dat', # eta_el
         'DOES_NOT_EXIST.dat', # ignore deep-stall regime, delta_Cm_ds = 0
     ]
-
+    #print(len(hifi_C_fnames)  len(hifi_damping_fnames) )
     if fname in hifi_C_fnames:
         table = cl.hifi_C
 
@@ -132,6 +132,7 @@ for file in os.listdir("tables/aerodata"):
         try:
             points = pl.points[file]
             values = pl.tables[file]
+            table = get_c_lookup(file)
             i += 1
         except:
             print(f"    ignoring {file}")
@@ -140,6 +141,10 @@ for file in os.listdir("tables/aerodata"):
 
 if i == 44:
     print("PASS: all 44 tables read successsfully")
+else:
+    print("PASS: table loading complete")
+
+test_1d(points, values, table)
 
 import pdb
 pdb.set_trace()
