@@ -96,12 +96,11 @@ def test_3d(points, values):
     pass
 
 def test_2d(points, values, table, table_output_idx):
-    for i, point1 in enumerate(points[0]):
-        for j, point2 in enumerate(points[1]):
-            delta = values[i,j] - table(torch.tensor([point1,point2]))
+    for i, alpha in enumerate(points[0]):
+        for j, beta in enumerate(points[1]):
+            delta = values[i,j] - table(torch.tensor([alpha,beta]))
             delta = delta[table_output_idx]
-            import pdb
-            pdb.set_trace()
+            print(delta)
 
 def test_1d(points, values, table, table_output_idx):
     for i, point in enumerate(points):
@@ -166,6 +165,8 @@ for file in os.listdir("tables/aerodata"):
             elif len(points) == 2:
                 # a list of 2 tensors indicates a 2d table
                 test_2d(points, values, table, table_output_idx)
+                import pdb
+                pdb.set_trace()
             else:
                 # This is for non 2d or 3d -> 1d tables
                 test_1d(points, values, table, table_output_idx)
