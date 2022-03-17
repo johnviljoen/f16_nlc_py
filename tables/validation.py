@@ -95,6 +95,12 @@ hifi_other_coeffs_fnames = [
 def test_3d(points, values):
     pass
 
+"""
+THIS DOESNT WORK AS THEY ARE COMPARING APPLES TO ORANGES
+
+THESE VALUES ARE NOT CALCULATED DIRECTLY FROM THE TABLES
+THEY ARE A FUNCTION OF MULTIPLE TABLES!!!!!
+"""
 def test_2d(points, values, table, table_output_idx):
     for i, alpha in enumerate(points[0]):
         for j, beta in enumerate(points[1]):
