@@ -6,12 +6,12 @@ import torch
 
 try:
     from dynamics.parameters import state_vector
+    xu = state_vector.values
 except:
     print('FAIL: failed to import state vector from parameters')
 
 # print('PASS: imported state vector from parameters')
 
-xu = state_vector.values
 
 try:
     from dynamics.aircraft import calc_xdot

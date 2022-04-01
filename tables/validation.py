@@ -17,12 +17,6 @@ import os
 from tables.c_tables import c_lookup as cl
 from tables.py_tables import py_lookup as pl
 
-inp1 = torch.tensor([1.0])
-inp2 = torch.tensor([1.0,2.0])
-inp3 = torch.tensor([1.0,2.0,3.0])
-
-print(cl.hifi_C_lef(inp2))
-
 """
 1.
     The files will with one exception have lookup axes of (alpha, beta, dh) in that order.
@@ -32,6 +26,9 @@ print(cl.hifi_C_lef(inp2))
     I will validate the c_lookup at the exact points of the table first by going through
     the aerodata folder manually here in Python.
 """
+
+# acceptable delta in lookup table
+delta_lim = 1e-06
 
 hifi_C_fnames = [
     'CX0120_ALPHA1_BETA1_DH1_201.dat', # Cx
@@ -95,38 +92,56 @@ hifi_other_coeffs_fnames = [
 def test_3d(points, values):
     pass
 
-"""
-THIS DOESNT WORK AS THEY ARE COMPARING APPLES TO ORANGES
-
-THESE VALUES ARE NOT CALCULATED DIRECTLY FROM THE TABLES
-THEY ARE A FUNCTION OF MULTIPLE TABLES!!!!!
-"""
-def test_2d(points, values, table, table_output_idx):
+# NOTE: it appears that the first and last values are checked to be correct
+# but all others are off right now. Could it be mismatched alphas and betas?
+def test_hifi_C(points, values, table, table_output_idx):
     for i, alpha in enumerate(points[0]):
         for j, beta in enumerate(points[1]):
-            delta = values[i,j] - table(torch.tensor([alpha,beta]))
-            delta = delta[table_output_idx]
-            print(delta)
+            for k, el in enumerate(points[2]):
+                delta = values[i,j,k] - table(torch.tensor([alpha,beta,el]))
+                delta = delta[table_output_idx]
+                print(f'hifi_C delta is: {delta}')
+                if torch.abs(delta) > 1e-03:
+                    import pdb
+                    pdb.set_trace()
 
-def test_1d(points, values, table, table_output_idx):
+def test_hifi_damping(points, values, table, table_output_idx):
     for i, point in enumerate(points):
         # i is the alpha index
         delta = values[i] - table(points[i].unsqueeze(0))
         delta = delta[table_output_idx] # selects the correct delta
-        if delta > 1e-06:
+        if delta > delta_lim:
             print(f'moderate discrepancy detected: {delta}')
 
-def get_c_lookup(fname):
+def test_hifi_damping_lef(points, values, table, table_output_idx):
+    for i, point in enumerate(points):
+        # i is the alpha index
+        delta = values[i] - table(points[i].unsqueeze(0))
+        delta = delta[table_output_idx] # selects the correct delta
+        if delta > delta_lim:
+            print(f'moderate discrepancy detected: {delta}')
+
+def test_hifi_other_coeffs(points, values, table, table_output_idx):
+    for i, point in enumerate(points):
+        # i is the alpha index
+        delta = values[i] - table(points[i].unsqueeze(0))
+        delta = delta[table_output_idx] # selects the correct delta
+        if delta > delta_lim:
+            print(f'moderate discrepancy detected: {delta}')
+
+def test(fname, points, values):
     
     if fname in hifi_C_fnames:
         table = cl.hifi_C
         table_outputs = ['Cx', 'Cz', 'Cm', 'Cy', 'Cn', 'Cl']
         table_output_idx = hifi_C_fnames.index(fname)
+        #test_hifi_C(points, values, table, table_output_idx)
     
     elif fname in hifi_damping_fnames:
         table = cl.hifi_damping
         table_outputs = ['Cxq', 'Cyr', 'Cyp', 'Czq', 'Clr', 'Clp', 'Cmq', 'Cnr', 'Cnp']
         table_output_idx = hifi_damping_fnames.index(fname)
+        test_hifi_damping(points, values, table, table_output_idx)
     
     elif fname in hifi_C_lef_fnames:
         table = cl.hifi_C_lef
@@ -137,6 +152,7 @@ def get_c_lookup(fname):
         table = cl.hifi_damping_lef
         table_outputs = ['delta_Cxq_lef', 'delta_Cyr_lef', 'delta_Cyp_lef', 'delta_Czq_lef', 'delta_Clr_lef', 'delta_Clp_lef', 'delta_Cmq_lef', 'delta_Cnr_lef','delta_Cnp_lef']
         table_output_idx = hifi_damping_lef_fnames.index(fname)
+        test_hifi_damping_lef(points, values, table, table_output_idx)
     
     elif fname in hifi_rudder_fnames:
         table = cl.hifi_rudder
@@ -152,10 +168,9 @@ def get_c_lookup(fname):
         table = cl.hifi_other_coeffs
         table_outputs = ['delta_Cnbeta', 'delta_Clbeta', 'delta_Cm', 'eta_el', 'delta_Cm_ds']
         table_output_idx = hifi_other_coeffs_fnames.index(fname)
+        test_hifi_other_coeffs(points, values, table, table_output_idx)
     
-    return table, table_outputs, table_output_idx 
-    
-
+print("WORK IN PROGRESS: currently only tests 1D tables")
 print("reading aerodata...")
 i = 0
 for file in os.listdir("tables/aerodata"):
@@ -163,30 +178,16 @@ for file in os.listdir("tables/aerodata"):
         try:
             points = pl.points[file]
             values = pl.tables[file]
-            table, table_outputs, table_output_idx = get_c_lookup(file)
-            
-            if len(points) == 3:
-                # a list of 3 tensors indicates a 3d table
-                pass
-            elif len(points) == 2:
-                # a list of 2 tensors indicates a 2d table
-                test_2d(points, values, table, table_output_idx)
-                import pdb
-                pdb.set_trace()
-            else:
-                # This is for non 2d or 3d -> 1d tables
-                test_1d(points, values, table, table_output_idx)
+            test(file, points, values)
             i += 1
         except:
             print(f"    ignoring {file}")
+            import pdb
+            pdb.set_trace()
 
-        # do stuff with points and values
 
 if i == 44:
     print("PASS: all 44 tables read successsfully")
 else:
     print("PASS: table loading complete")
 
-
-import pdb
-pdb.set_trace()

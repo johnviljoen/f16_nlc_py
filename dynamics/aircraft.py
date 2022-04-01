@@ -7,7 +7,7 @@ Created on Mon Nov  8 17:18:47 2021
 """
 
 import torch
-from tables.c_tables import table_C
+from tables.c_tables import c_lookup
 
 from utils.aerodata_parser import construct_lookup
 
