@@ -21,22 +21,31 @@ def main():
     f16 = F16()
     #print(f16.calc_xdot(f16.x.values, f16.u.values))
     f16.step(f16.u.values) 
-    #print(f16.trim(1000,700,f16.x, f16.u))
+    x_trim, opt = f16.trim(1000,700,f16.x, f16.u)
+    f16.x.values = x_trim
 
-    """ Run simulation for 0.5 seconds """
-    # number of timesteps
+    def run(ts=4000):
+        """ Run simulation for 0.5 seconds """
+        # number of timesteps
+        out = torch.zeros([ts,18])
+        for i in range(ts):
+            print(i)
+            f16.step(f16.u.values)
+            out[i,:] = f16.x.values
+        return out
+
+    def plot(out):
+        # plot
+        t = torch.linspace(0,0.5,ts)
+        fig, axs = plt.subplots(18,1)
+        for i in range(18):
+            axs[i].plot(t, out[:,i])
+        plt.show()
+   
     ts = 4000
-    out = torch.zeros([ts,18])
-    for i in range(ts):
-        print(i)
-        f16.step(f16.u.values)
-        out[i,:] = f16.x.values
-
-    t = torch.linspace(0,0.5,ts)
-    fig, axs = plt.subplots(18,1)
-    for i in range(18):
-        axs[i].plot(t, out[:,i])
-    plt.show()
+    #out = run(ts=ts)
+    #plot(out)
+    
 
     import pdb
     pdb.set_trace()

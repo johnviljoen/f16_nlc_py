@@ -6,12 +6,6 @@ from dynamics.nlplant import calc_xdot
 
 def trim(h_t, v_t, x, u):
 
-    print('THIS FUNCTION DOES NOT TRIM CORRECTLY AS OF TIME OF WRITING')
-
-    print("I am like 99% sure it is because of the torch clips being used in the objective function")
-    print("as opposed to the np.clip as before, the optimal thrust was -2000 ish last i checked")
-    print("the minimum should be 1000")
-    
     """ Function for trimming the aircraft in straight and level flight. The objective
     function is built to be the same as that of the MATLAB version of the Nguyen 
     simulation.
@@ -28,8 +22,9 @@ def trim(h_t, v_t, x, u):
         opt:
             scipy.optimize.minimize output information
     """
-    
-    
+
+    print('Trim state being calculated...')
+
     # initial guesses
     thrust = 5000           # thrust, lbs
     elevator = -0.09        # elevator, degrees
@@ -63,7 +58,8 @@ def trim(h_t, v_t, x, u):
 
     #################### back to torch tensors #####################
     x_trim = torch.tensor([0, 0, h_t, 0, alpha_t, 0, v_t, alpha_t, 0, 0, 0, 0, P3_t, dstab_t, da_t, dr_t, dlef, -alpha_t*180/pi])
-    
+   
+    print('SUCCESS: Trim complete')
     return x_trim, opt
 
 
@@ -102,9 +98,6 @@ def obj_func(UX0, h_t, v_t, x, u):
     # alpha limits
     x.values[7] = torch.clip(x.values[7], x.lower_bound[7]*pi/180, x.upper_bound[7]*pi/180)
     
-    import pdb
-    pdb.set_trace()
-        
     u = x.values[12:16]
     xdot,_,_ = calc_xdot(x.values, u)
     xdot = xdot.reshape([18,1])
@@ -118,4 +111,4 @@ def obj_func(UX0, h_t, v_t, x, u):
 
     weight = np.array([0, 0, 5, phi_w, theta_w, psi_w, 2, 10, 10, 10, 10, 10], dtype=np.float32).transpose()
     cost = np.matmul(weight,(xdot[0:12]**2).numpy())
-    return cost.numpy().squeeze()
+    return cost

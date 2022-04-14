@@ -17,10 +17,10 @@ class F16(gym.Env):
         self.u = input_vector                   # mutable input dataclass
         self.paras = simulation_parameters      # immutable simulation parameters dataclass
         
-        
         self.calc_xdot = calc_xdot              # wrap the calculate xdot in this object
-        self.trim = trim
-
+        self.trim = trim                        # wrap the trim function
+        
+    
     def step(self, u):
         """
         Function to update the state based on an instantaneous input
