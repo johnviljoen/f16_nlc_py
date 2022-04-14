@@ -12,6 +12,7 @@ Created on Sat Sep 25 20:23:36 2021
 from sys import exit
 import torch
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 # custom files
 from f16 import F16
@@ -20,31 +21,37 @@ def main():
     # run through tests or nah
     f16 = F16()
     #print(f16.calc_xdot(f16.x.values, f16.u.values))
-    f16.step(f16.u.values) 
+    f16.step(f16.u.values)
+
+    f16.linmod(f16.x.values, f16.u.values)
+
+    import pdb
+    pdb.set_trace()
+    # trim and set state to trim
     x_trim, opt = f16.trim(1000,700,f16.x, f16.u)
     f16.x.values = x_trim
+    f16.u.values = x_trim[12:16]
 
     def run(ts=4000):
         """ Run simulation for 0.5 seconds """
         # number of timesteps
         out = torch.zeros([ts,18])
-        for i in range(ts):
-            print(i)
+        for i in tqdm(range(ts)):
             f16.step(f16.u.values)
             out[i,:] = f16.x.values
         return out
 
     def plot(out):
         # plot
-        t = torch.linspace(0,0.5,ts)
+        t = torch.linspace(0,ts/1000,ts)
         fig, axs = plt.subplots(18,1)
         for i in range(18):
             axs[i].plot(t, out[:,i])
         plt.show()
    
-    ts = 4000
-    #out = run(ts=ts)
-    #plot(out)
+    ts = 10000
+    out = run(ts=ts)
+    plot(out)
     
 
     import pdb

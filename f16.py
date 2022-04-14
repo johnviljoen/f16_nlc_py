@@ -2,6 +2,7 @@ from control.trim import trim
 import torch
 import gym
 import numpy as np
+from scipy.signal import cont2discrete
 
 from dynamics.parameters import state_vector, input_vector, simulation_parameters
 from dynamics.nlplant import calc_xdot
@@ -20,7 +21,37 @@ class F16(gym.Env):
         self.calc_xdot = calc_xdot              # wrap the calculate xdot in this object
         self.trim = trim                        # wrap the trim function
         
-    
+        # instantiate some tensors to speed up linearisation process
+        self.A = torch.zeros([len(self.x.values),len(self.x.values)])
+        self.B = torch.zeros([len(self.x.values),len(self.u.values)])
+        self.C = torch.zeros([len(self.x._obs_x_idx), len(self.x.values)])
+        self.D = torch.zeros([len(self.x._obs_x_idx), len(self.u.values)])
+        self.eps = 1e-05
+
+    def linmod(self, x, u):
+
+        # Perturb each of the state variables and compute linearisation
+        for i in range(len(x)):
+
+            dx = torch.zeros([len(x)])
+            dx[i] = self.eps
+
+            self.A[:,i] = (self.calc_xdot(x + dx, u)[0] - self.calc_xdot(x, u)[0]) / self.eps
+            self.C[:,i] = (self.get_obs(x + dx, u)[0] - self.get_obs(x, u)[0]) / self.eps
+
+        for i in range(len(u)):
+
+            du = torch.zeros([len(u)])
+            du[i] = self.eps
+
+            self.B[:,i] = (self.calc_xdot(x, u + du)[0] - self.calc_xdot(x, u)[0]) / self.eps
+            self.D[:,i] = (self.get_obs(x, u + du)[0] - self.get_obs(x, u)[0]) / self.eps 
+
+        self.A, self.B, self.C, self.D = cont2discrete((self.A, self.B, self.C, self.D), self.paras.dt)[0:4]
+   
+    def get_obs(self, x, u):
+        return torch.tensor([x[i] for i in self.x._obs_x_idx])
+
     def step(self, u):
         """
         Function to update the state based on an instantaneous input
@@ -28,7 +59,9 @@ class F16(gym.Env):
         xdot = self.calc_xdot(self.x.values, u)[0]
         dx = xdot*self.paras.dt
         self.x.values += dx
+       
         
+
         # print(self.calc_xdot(self.x.values))
         
         # trim and linearise upon initialisation
