@@ -6,22 +6,14 @@ Created on Sat Sep 25 20:23:36 2021
 @author: johnviljoen
 """
 
-# dependencies
 # from stable_baselines3 import A2C
 # from stable_baselines3.common.vec_env import DummyVecEnv
-from scipy.signal import cont2discrete
-import numpy as np
 # from stable_baselines3.common.env_checker import check_env
-from scipy.sparse import csc_matrix
-import osqp
-import ctypes
-import scipy.io
 from sys import exit
 import torch
+import matplotlib.pyplot as plt
 
 # custom files
-
-
 from f16 import F16
 
 def main():
@@ -32,13 +24,19 @@ def main():
     #print(f16.trim(1000,700,f16.x, f16.u))
 
     """ Run simulation for 0.5 seconds """
-    out = torch.zeros([500,18])
-    for i in range(500):
+    # number of timesteps
+    ts = 4000
+    out = torch.zeros([ts,18])
+    for i in range(ts):
         print(i)
         f16.step(f16.u.values)
         out[i,:] = f16.x.values
 
-
+    t = torch.linspace(0,0.5,ts)
+    fig, axs = plt.subplots(18,1)
+    for i in range(18):
+        axs[i].plot(t, out[:,i])
+    plt.show()
 
     import pdb
     pdb.set_trace()
