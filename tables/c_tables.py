@@ -69,8 +69,20 @@ class C_lookup():
         tables.hifi_C_lef(alpha_compat, beta_compat, retVal_pointer)
         
         return torch.tensor(retVal, dtype=dtype)
-        obsv
-        ''' This table only accepts alpha up to 45 '''
+        
+    def hifi_damping_lef(self, inp):
+        ''' 
+        This table only accepts alpha up to 45
+            delta_Cxq_lef
+            delta_Cyr_lef
+            delta_Cyp_lef
+            delta_Czq_lef
+            delta_Clr_lef
+            delta_Clp_lef
+            delta_Cmq_lef
+            delta_Cnr_lef
+            delta_Cnp_lef
+        '''
         inp[0] = torch.clip(inp[0], min=-20., max=45.)
        
         

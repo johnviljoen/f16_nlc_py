@@ -108,8 +108,6 @@ def train_table(coeff, LR, device, dtype, coeff_lim,
         
         temp_loss_list = []
         for X_train, y_train in train_dataloader:
-            import pdb
-            pdb.set_trace()
             X_train = X_train.type(dtype).to(device)
             y_train = y_train.type(dtype).to(device)
 
@@ -195,7 +193,7 @@ if __name__ == '__main__':
     BATCH_SIZE = 512
     
     # failure:
-    test_list = ['Clr']
+    #test_list = ['Clr']
     # select which tables to train and update the NNs folder with
     for i, coeff in enumerate(full_list):
     

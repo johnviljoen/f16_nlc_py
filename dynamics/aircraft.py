@@ -7,11 +7,12 @@ Created on Mon Nov  8 17:18:47 2021
 """
 
 import torch
-from tables.c_tables import c_lookup
+from tables.c_tables import c_lookup as table_C
 
-from utils.aerodata_parser import construct_lookup
 
-lookup = construct_lookup('tables/aerodata')
+#from utils.aerodata_parser import construct_lookup
+
+#lookup = construct_lookup('tables/aerodata')
 
 def atmos(alt, vt):
 
@@ -30,7 +31,7 @@ def atmos(alt, vt):
     
     return mach, qbar, ps
 
-def primary_xdot(xu, lookup_type='Py'):
+def primary_xdot(xu, lookup_type='C'):
     
     g    = 32.17                            # gravity, ft/s^2
     m    = 636.94                           # mass, slugs
@@ -177,72 +178,6 @@ def primary_xdot(xu, lookup_type='Py'):
         # pass alpha, el
         delta_Cnbeta, delta_Clbeta, delta_Cm, eta_el, delta_Cm_ds = table_C.hifi_other_coeffs(inp[::2])
     
-    elif lookup_type == 'Py':
-        """
-        The entire lookup system implemented in python using 
-        scipy regularGridInterpolate and interp1d after
-        numpy reshaping the raw .dat files into the correct
-        shapes
-        """
-         
-        # hifi_C
-        Cx = torch.tensor(lookup['Cx']((alpha,beta,el)))
-        Cz = torch.tensor(lookup['Cz']((alpha,beta,el)))
-        Cm = torch.tensor(lookup['Cm']((alpha,beta,el)))
-        Cy = torch.tensor(lookup['Cy']((alpha,beta)))
-        Cn = torch.tensor(lookup['Cn']((alpha,beta,el)))
-        Cl = torch.tensor(lookup['Cl']((alpha,beta,el)))
-        
-        # hifi_damping
-        Cxq = torch.tensor(lookup['CXq'](alpha))
-        Cyr = torch.tensor(lookup['CYr'](alpha))
-        Cyp = torch.tensor(lookup['CYp'](alpha))
-        Czq = torch.tensor(lookup['CZq'](alpha))
-        Clr = torch.tensor(lookup['CLr'](alpha))
-        Clp = torch.tensor(lookup['CLp'](alpha))
-        Cmq = torch.tensor(lookup['CMq'](alpha))
-        Cnr = torch.tensor(lookup['CNr'](alpha))
-        Cnp = torch.tensor(lookup['CNp'](alpha))
-        # ^ verified ^
-
-        # hifi_C_lef
-        delta_Cx_lef = torch.tensor(lookup['delta_Cx_lef'](alpha,beta))
-        delta_Cz_lef = torch.tensor(lookup['delta_Cz_lef'](alpha,beta))
-        delta_Cm_lef = torch.tensor(lookup['delta_Cm_lef'](alpha,beta))
-        delta_Cy_lef = torch.tensor(lookup['delta_Cy_lef'](alpha,beta))
-        delta_Cn_lef = torch.tensor(lookup['delta_Cn_lef'](alpha,beta))
-        delta_Cl_lef = torch.tensor(lookup['delta_Cl_lef'](alpha,beta))
-         
-        # hifi_rudder 
-        delta_Cy_r30 = torch.tensor(lookup['delta_Cy_r30'](alpha,beta))
-        delta_Cn_r30 = torch.tensor(lookup['delta_Cn_r30'](alpha,beta))
-        delta_Cl_r30 = torch.tensor(lookup['delta_Cl_r30'](alpha,beta))
-
-        # hifi_ailerons
-        delta_Cy_a20 = torch.tensor(lookup['delta_Cy_a20'](alpha,beta))
-        delta_Cy_a20_lef = torch.tensor(lookup['delta_Cy_a20_lef'](alpha,beta))
-        delta_Cn_a20 = torch.tensor(lookup['delta_Cn_a20'](alpha,beta))
-        delta_Cn_a20_lef = torch.tensor(lookup['delta_Cn_a20_lef'](alpha,beta))
-        delta_Cl_a20 = torch.tensor(lookup['delta_Cl_a20'](alpha,beta))
-        delta_Cl_a20_lef = torch.tensor(lookup['delta_Cl_a20_lef'](alpha,beta))
-
-        # hifi_damping_lef
-        delta_Cxq_lef = torch.tensor(lookup['delta_CXq_lef'](alpha))
-        delta_Cyr_lef = torch.tensor(lookup['delta_CYr_lef'](alpha))
-        delta_Cyp_lef = torch.tensor(lookup['delta_CYp_lef'](alpha))
-        delta_Czq_lef = torch.tensor(lookup['delta_CZq_lef'](alpha))
-        delta_Clr_lef = torch.tensor(lookup['delta_CLr_lef'](alpha))
-        delta_Clp_lef = torch.tensor(lookup['delta_CLp_lef'](alpha))
-        delta_Cmq_lef = torch.tensor(lookup['delta_CMq_lef'](alpha))
-        delta_Cnr_lef = torch.tensor(lookup['delta_CNr_lef'](alpha))
-        delta_Cnp_lef = torch.tensor(lookup['delta_CNp_lef'](alpha))
-       
-        # hifi_other_coeffs
-        delta_Cnbeta = torch.tensor(lookup['delta_CNbeta'](alpha))
-        delta_Clbeta = torch.tensor(lookup['delta_CLbeta'](alpha))
-        delta_Cm = torch.tensor(lookup['delta_Cm'](alpha))
-        eta_el = torch.tensor(lookup['eta_el'](el))
-        delta_Cm_ds = torch.tensor(0) # ignore deep-stall regime
           
     # In[compute Cx_tot, Cz_tot, Cm_tot, Cy_tot, Cn_tot, and Cl_tot]
         # (as on NASA report p37-40)

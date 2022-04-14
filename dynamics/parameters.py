@@ -106,14 +106,14 @@ f2m = 1/m2f # feet to metres conversion
 x0 = torch.tensor([npos*m2f, epos*m2f, h*m2f, phi, theta, psi, vt*m2f, alpha, beta, p, q, r, T, dh, da, dr, lef, -alpha*180/pi])#[np.newaxis].T
 u0 = torch.clone(x0[12:16])
 
-if stab_flag == 1:
-    so_file = os.getcwd() + "/dynamics/C/nlplant_xcg35.so"
-elif stab_flag == 0:
-    so_file = os.getcwd() + "/dynamics/C/nlplant_xcg25.so"
-    
-so_file = os.getcwd() + "/dynamics/C_old/nlplant.so"
-# so_file = os.getcwd() + "/C/nlplant.so"
-nlplant = CDLL(so_file)
+#if stab_flag == 1:
+#    so_file = os.getcwd() + "/dynamics/C/nlplant_xcg35.so"
+#elif stab_flag == 0:
+#    so_file = os.getcwd() + "/dynamics/C/nlplant_xcg25.so"
+#    
+#so_file = os.getcwd() + "/dynamics/C_old/nlplant.so"
+## so_file = os.getcwd() + "/C/nlplant.so"
+#nlplant = CDLL(so_file)
 
 states = ['npos','epos','h','phi','theta','psi','V','alpha','beta','p','q','r','T','dh','da','dr','lf2','lf1']
 inputs = ['T','dh','da','dr']
@@ -231,10 +231,6 @@ class SS:
     B: torch.tensor
     C: torch.tensor
     D: torch.tensor
-    # Ac: torch.tensor
-    # Bc: torch.tensor
-    # Cc: torch.tensor
-    # Dc: torch.tensor
     x_lin: torch.tensor
     u_lin: torch.tensor
     dt: float

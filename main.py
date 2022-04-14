@@ -38,6 +38,8 @@ def main():
         f16.step(f16.u.values)
         out[i,:] = f16.x.values
 
+
+
     import pdb
     pdb.set_trace()
 
@@ -72,24 +74,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

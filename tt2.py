@@ -16,8 +16,6 @@ from tables.NN import approximator
 
 # In[settings]
 
-
-
 def train_table(coeff, LR, device, dtype, coeff_lim,
                 train_datapoints=80000,
                 val_datapoints=20000,

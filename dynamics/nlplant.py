@@ -1,4 +1,7 @@
 import torch
+# in this case primary_xdot refers to the primary 12 states of a free flying
+# object in space. The rest of the states come from actuators, like the engine
+# or the ailerons etc
 from dynamics.aircraft import primary_xdot
 from dynamics.actuators import upd_lef, upd_thrust, upd_dstab, upd_ail, upd_rud
 

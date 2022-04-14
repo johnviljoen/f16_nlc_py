@@ -3,7 +3,7 @@ import torch
 import gym
 import numpy as np
 
-from dynamics.parameters import state_vector, input_vector, simulation_parameters, nlplant
+from dynamics.parameters import state_vector, input_vector, simulation_parameters
 from dynamics.nlplant import calc_xdot
 from control.trim import trim
 
