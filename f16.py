@@ -7,6 +7,8 @@ from scipy.signal import cont2discrete
 from dynamics.parameters import state_vector, input_vector, simulation_parameters
 from dynamics.nlplant import calc_xdot
 from control.trim import trim
+from control.lqr import dlqr
+from utils.linmod import Linmod
 
 class F16(gym.Env):
     
@@ -21,36 +23,61 @@ class F16(gym.Env):
         self.calc_xdot = calc_xdot              # wrap the calculate xdot in this object
         self.trim = trim                        # wrap the trim function
         
-        # instantiate some tensors to speed up linearisation process
-        self.A = torch.zeros([len(self.x.values),len(self.x.values)])
-        self.B = torch.zeros([len(self.x.values),len(self.u.values)])
-        self.C = torch.zeros([len(self.x._obs_x_idx), len(self.x.values)])
-        self.D = torch.zeros([len(self.x._obs_x_idx), len(self.u.values)])
-        self.eps = 1e-05
+        # instantiate the lineariser
+        self.linmod = Linmod(
+                self.calc_xdot_mpc,                 # the input output nonlinear plant
+                self.get_obs_mpc,               # the func to generate observable states
+                len(self.x._get_mpc_x()),             # the number of states
+                len(self.u._get_mpc_u()),             # the number of inputs
+                len(self.x._mpc_obs_x_idx),         # the number of observable states
+                1e-05,                          # the perturbation for linearisation
+                self.paras.dt)                  # the simulation timestep (assumed to be constant)
+        
+        self.dlqr = dlqr
 
-    def linmod(self, x, u):
-
-        # Perturb each of the state variables and compute linearisation
-        for i in range(len(x)):
-
-            dx = torch.zeros([len(x)])
-            dx[i] = self.eps
-
-            self.A[:,i] = (self.calc_xdot(x + dx, u)[0] - self.calc_xdot(x, u)[0]) / self.eps
-            self.C[:,i] = (self.get_obs(x + dx, u)[0] - self.get_obs(x, u)[0]) / self.eps
-
-        for i in range(len(u)):
-
-            du = torch.zeros([len(u)])
-            du[i] = self.eps
-
-            self.B[:,i] = (self.calc_xdot(x, u + du)[0] - self.calc_xdot(x, u)[0]) / self.eps
-            self.D[:,i] = (self.get_obs(x, u + du)[0] - self.get_obs(x, u)[0]) / self.eps 
-
-        self.A, self.B, self.C, self.D = cont2discrete((self.A, self.B, self.C, self.D), self.paras.dt)[0:4]
-   
     def get_obs(self, x, u):
         return torch.tensor([x[i] for i in self.x._obs_x_idx])
+
+    def get_obs_mpc(self, x, u):
+        return torch.tensor([x[i] for i in self.x._mpc_obs_x_idx])
+
+    def calc_xdot_mpc(self, x, u):
+        """
+        Args:
+            x:
+                {h,phi,theta,V,alpha,beta,p,q,r,lf1,lf2}
+
+            u:
+                torch 2D tensor (vertical vector) of 3 elements
+                {dh,da,dr}
+
+        Returns:
+            xdot:
+                torch 2D tensor (vertical vector) of 10 elements
+                time derivatives of {h,phi,theta,alpha,beta,p,q,r,lf1,lf2}
+        """
+
+        # without assertions we just get a seg fault, this is much easier to debug
+        assert len(x) == 9, f"ERROR: expected 9 states, got {len(x)}"  
+        assert len(u) == 3, f"ERROR: expected 3 inputs, got {len(u)}"
+
+        # take the current full state as the starting point, and add the mpc states 
+        std_x = torch.clone(self.x.values)
+        mpc_x = x #self.x._get_mpc_x()
+        for mpc_i, std_i in enumerate(self.x._mpc_x_idx):
+            std_x[std_i] = mpc_x[mpc_i]
+       
+        std_u = torch.clone(self.u.values)
+        mpc_u = u
+        for mpc_i, std_i in enumerate(self.u._mpc_u_idx):
+            std_u[std_i] = mpc_u[mpc_i]
+
+        std_xdot = self.calc_xdot(std_x, std_u)[0]
+        mpc_xdot = torch.zeros(len(mpc_x))
+        for mpc_i, std_i in enumerate(self.x._mpc_x_idx):
+            mpc_xdot[mpc_i] = std_xdot[std_i]
+        
+        return mpc_xdot
 
     def step(self, u):
         """
@@ -60,14 +87,9 @@ class F16(gym.Env):
         dx = xdot*self.paras.dt
         self.x.values += dx
        
+    def calc_SFB_u(self, x, u):
+        """
+        Function to perform state feedback (SFB) to calculate an input (u) for the plant.
+        This is for applying DLQR primarily.
+        """
         
-
-        # print(self.calc_xdot(self.x.values))
-        
-        # trim and linearise upon initialisation
-        #self.x.initial_condition, _ = self.trim(10000, 700)
-        #self.u.initial_condition = np.copy(self.x.initial_condition[12:16])
-        # self.reset()
-        
-        # self.action_space = spaces.Box(low=self.u.lower_cmd_bound, high=self.u.upper_cmd_bound, dtype=np.float32)
-        # self.observation_space = spaces.Box(low=self.x.lower_bound, high=self.x.upper_bound, shape=(len(self.x.states)), dtype=np.float32)
