@@ -6,6 +6,23 @@ from dynamics.aircraft import primary_xdot
 from dynamics.actuators import upd_lef, upd_thrust, upd_dstab, upd_ail, upd_rud
 
 def calc_xdot(x, u):
+
+    """
+    args:
+        x:
+            {xe, ye, h, phi, theta, psi, V, alpha, beta, p, q, r, T, dh, da, dr, lf2, lf1}
+        u:
+            {T, dh, da, dr}
+
+    returns:
+        xdot:
+            time derivates of x, in same order
+        accelerations:
+            {anx_cg, any_cg, anz_cg}
+        atmospherics:
+            {mach, qbar, ps}
+    """
+
     # initialise variables
     actuator_xdot = torch.zeros(6)
     # Thrust Model
@@ -23,4 +40,82 @@ def calc_xdot(x, u):
     # assign actuator xdots
     xdot[12:18] = actuator_xdot
     return xdot, accelerations, atmospherics
+
+class Calc_xdot_mpc():
+
+    """
+    methods:
+        update:
+            Resets the non MPC states and inputs to be those provided to it
+        forward:
+            calculates the MPC state time derivates (xdot_mpc) for the MPC
+            states and inputs provided to it
+    """
+
+    def __init__(self, std_x, std_u, mpc_x_idx, mpc_u_idx):
+        self.std_x = std_x
+        self.std_u = std_u
+        self.mpc_x_idx = mpc_x_idx
+        self.mpc_u_idx = mpc_u_idx
+        
+    def __call__(self, mpc_x, mpc_u):
+        return self.forward(mpc_x, mpc_u)
+
+    def update_std_x_u(self, std_x, std_u):
+        """    
+        args:
+            std_x:
+                {xe, ye, h, phi, theta, psi, V, alpha, beta, p, q, r, T, dh, da, dr, lf2, lf1}
+            std_u:
+                {t, dh, da, dr}
+        """
+        self.std_x = std_x
+        self.std_u = std_u
+
+    def forward(self, mpc_x, mpc_u):
+        
+        """
+        args:
+            mpc_x:
+                {h,phi,theta,V,alpha,beta,p,q,r,lf1,lf2}
+            mpc_u:
+                torch 2D tensor (vertical vector) of 3 elements
+                {dh,da,dr}
+            x_full:
+                {xe, ye, h, phi, theta, psi, V, alpha, beta, p, q, r, T, dh, da, dr, lf2, lf1}
+            u_full:
+                {t, dh, da, dr}
+            mpc_x_idx:
+                list of index of elements of x in x_full
+            mpc_u_idx:
+                list of index of elements of u in u_full
+
+        returns:
+            xdot:
+                torch 2D tensor (vertical vector) of 10 elements
+                time derivatives of {h,phi,theta,alpha,beta,p,q,r,lf1,lf2}
+        """
+
+        # without assertions we just get a seg fault if wrong states input, this is much easier to debug
+        assert len(mpc_x) == 9, f"ERROR: expected 9 states, got {len(x)}"
+        assert len(mpc_u) == 3, f"ERROR: expected 3 inputs, got {len(u)}"
+
+        # take the current full state as the starting point, and add the mpc states 
+        for mpc_i, std_i in enumerate(self.mpc_x_idx):
+            self.std_x[std_i] = mpc_x[mpc_i]
+       
+        for mpc_i, std_i in enumerate(self.mpc_u_idx):
+            self.std_u[std_i] = mpc_u[mpc_i]
+
+        std_xdot = calc_xdot(self.std_x, self.std_u)[0]
+        mpc_xdot = torch.zeros(len(mpc_x))
+        for mpc_i, std_i in enumerate(self.mpc_x_idx):
+            mpc_xdot[mpc_i] = std_xdot[std_i]
+        
+        return mpc_xdot
+
+
+
+
+
 

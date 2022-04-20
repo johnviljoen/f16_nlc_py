@@ -23,9 +23,9 @@ def main():
     #print(f16.calc_xdot(f16.x.values, f16.u.values))
     f16.step(f16.u.values)
 
-    test_out = f16.calc_xdot_mpc(f16.x._get_mpc_x(), f16.u._get_mpc_u())
+    mpc_xdot = f16.calc_xdot_mpc(f16.x._get_mpc_x(), f16.u._get_mpc_u())#, f16.x.values, f16.u.values, f16.x._mpc_x_idx, f16.u._mpc_u_idx)
 
-    test_out2 = f16.linmod(f16.x._get_mpc_x(), f16.u._get_mpc_u())
+    mpc_ss = f16.linmod(f16.x._get_mpc_x(), f16.u._get_mpc_u())
 
     import pdb
     pdb.set_trace()
