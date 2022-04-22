@@ -25,10 +25,9 @@ def main():
 
     mpc_xdot = f16.calc_xdot_mpc(f16.x._get_mpc_x(), f16.u._get_mpc_u())#, f16.x.values, f16.u.values, f16.x._mpc_x_idx, f16.u._mpc_u_idx)
 
-    mpc_ss = f16.linmod(f16.x._get_mpc_x(), f16.u._get_mpc_u())
+    mpc_ss = f16.linmod_mpc(f16.x._get_mpc_x(), f16.u._get_mpc_u())
+    std_ss = f16.linmod_std(f16.x.values, f16.u.values)
 
-    import pdb
-    pdb.set_trace()
     # trim and set state to trim
     x_trim, opt = f16.trim(1000,700,f16.x, f16.u)
     f16.x.values = x_trim
@@ -51,7 +50,7 @@ def main():
             axs[i].plot(t, out[:,i])
         plt.show()
    
-    ts = 10000
+    ts = 20000
     out = run(ts=ts)
     plot(out)
     

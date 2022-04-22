@@ -53,6 +53,17 @@ class Calc_xdot_mpc():
     """
 
     def __init__(self, std_x, std_u, mpc_x_idx, mpc_u_idx):
+        """
+        args:
+            std_x:
+                {xe, ye, h, phi, theta, psi, V, alpha, beta, p, q, r, T, dh, da, dr, lf2, lf1}
+            std_u:
+                {t, dh, da, dr}
+            mpc_x_idx:
+                list of index of elements of x in x_full
+            mpc_u_idx:
+                list of index of elements of u in u_full
+        """
         self.std_x = std_x
         self.std_u = std_u
         self.mpc_x_idx = mpc_x_idx
@@ -79,20 +90,10 @@ class Calc_xdot_mpc():
             mpc_x:
                 {h,phi,theta,V,alpha,beta,p,q,r,lf1,lf2}
             mpc_u:
-                torch 2D tensor (vertical vector) of 3 elements
                 {dh,da,dr}
-            x_full:
-                {xe, ye, h, phi, theta, psi, V, alpha, beta, p, q, r, T, dh, da, dr, lf2, lf1}
-            u_full:
-                {t, dh, da, dr}
-            mpc_x_idx:
-                list of index of elements of x in x_full
-            mpc_u_idx:
-                list of index of elements of u in u_full
 
         returns:
             xdot:
-                torch 2D tensor (vertical vector) of 10 elements
                 time derivatives of {h,phi,theta,alpha,beta,p,q,r,lf1,lf2}
         """
 

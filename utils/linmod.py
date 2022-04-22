@@ -36,7 +36,6 @@ class Linmod():
 
             self.A[:,i] = (self.calc_xdot(x + dx, u)[0] - self.calc_xdot(x, u)[0]) / self.eps
             self.C[:,i] = (self.get_obs(x + dx, u)[0] - self.get_obs(x, u)[0]) / self.eps
-
         for i in range(len(u)):
 
             du = torch.zeros([len(u)])

@@ -39,9 +39,9 @@ class F16(gym.Env):
         self.get_obs = Get_observation(self.x._obs_x_idx)
         self.get_obs_mpc = Get_observation(self.x._mpc_obs_x_idx)
         
-        # instantiate the lineariser class, again this could be functional, or a method of this class
+        # instantiate the lineariser classes, again this could be functional, or a method of this class
         # but in keeping with UNIX philosphy I am keeping things modular and separate
-        self.linmod = Linmod(
+        self.linmod_mpc = Linmod(
                 self.calc_xdot_mpc,             # the input output nonlinear plant
                 self.get_obs_mpc,               # the func to generate observable states
                 len(self.x._get_mpc_x()),       # the number of states
@@ -50,6 +50,16 @@ class F16(gym.Env):
                 1e-05,                          # the perturbation for linearisation
                 self.paras.dt)                  # the simulation timestep (assumed to be constant)
 
+        self.linmod_std = Linmod(
+                self.calc_xdot,                 # the input output nonlinear plant
+                self.get_obs,                   # the func to generate observable states
+                len(self.x.values),             # the number of states
+                len(self.u.values),             # the number of inputs
+                len(self.x._obs_x_idx),         # the number of observable states
+                1e-05,                          # the perturbation for linearisation
+                self.paras.dt)                  # the simulation timestep (assumed to be constant)
+
+        # discrete time LQR gain calculator
         self.dlqr = dlqr
 
     def step(self, u):
