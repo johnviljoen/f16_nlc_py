@@ -120,8 +120,6 @@ class Calc_xdot_mpc():
         mpc_xdot = torch.zeros(len(mpc_x))
         for mpc_i, std_i in enumerate(self.mpc_x_idx):
             mpc_xdot[mpc_i] = std_xdot[std_i]
-        import pdb
-        pdb.set_trace()
         return mpc_xdot
 
 
