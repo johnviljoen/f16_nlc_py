@@ -133,8 +133,8 @@ udot_lb = [-10000, -60, -80, -120]
 # In[mpc control choices] -> must be in order!
 
 # observed_states = ['V','alpha','beta','p','q','r']
-observed_states = ['h','phi','theta','alpha','beta','p','q','r','lf2','lf1']
-mpc_states = ['phi','theta','alpha','beta','p','q','r','lf1','lf2']
+observed_states = ['h','phi','theta','alpha','beta','p','q','r','dh','da','dr','lf2','lf1']
+mpc_states = ['phi','theta','alpha','beta','p','q','r','dh','da','dr','lf1','lf2']
 mpc_inputs = ['dh','da','dr']
 mpc_controlled_states = ['p','q','r']
 
@@ -174,13 +174,23 @@ class stateVector:
                 
         self._np_x_lb = torch.tensor(self.lower_bound)
         self._np_x_ub = torch.tensor(self.upper_bound)
-        
-        self._vec_mpc_x_lb = torch.tensor(self._mpc_x_lb)[:,None]
-        self._vec_mpc_x_ub = torch.tensor(self._mpc_x_ub)[:,None]
 
-    def __call__(self):
-        return self.values
-        
+    def __repr__(self):
+        return repr(self.values)
+
+    def __getitem__(self, i):
+        return self.values[i]
+
+    def __setitem__(self, key, value):
+        self.values[key] = value
+
+    def __len__(self):
+        return len(self.values)
+    
+    # both these methods do the same thing, but mpc is what you should be using
+    @property
+    def mpc(self):
+        return torch.tensor([self.values[i] for i in self._mpc_x_idx])
     def _get_mpc_x(self):
         return torch.tensor([self.values[i] for i in self._mpc_x_idx])
     
@@ -206,14 +216,23 @@ class inputVector:
         self._mpc_u_ub = [self.upper_cmd_bound[i] for i in self._mpc_u_idx]
         self._mpc_udot_lb = [self.lower_rate_bound[i] for i in self._mpc_u_idx]
         self._mpc_udot_ub = [self.upper_rate_bound[i] for i in self._mpc_u_idx]
-        self._vec_mpc_u_lb = torch.tensor(self._mpc_u_lb).unsqueeze(0).T
-        self._vec_mpc_u_ub = torch.tensor(self._mpc_u_ub).unsqueeze(0).T
-        self._vec_mpc_udot_lb = torch.tensor(self._mpc_udot_lb).unsqueeze(0).T
-        self._vec_mpc_udot_ub = torch.tensor(self._mpc_udot_ub).unsqueeze(0).T
     
-    def __call__(self):
-        return self.values
-        
+    def __repr__(self):
+        return repr(self.values)
+
+    def __getitem__(self, key):
+        return self.values[key]
+
+    def __setitem__(self, key, value):
+        self.values[key] = value
+    
+    def __len__(self):
+        return len(self.values)
+    
+    # both these methods do the same thing, but mpc is what you should be using
+    @property
+    def mpc(self):
+        return torch.tensor([self.values[i] for i in self._mpc_u_idx])
     def _get_mpc_u(self):
         return torch.tensor([self.values[i] for i in self._mpc_u_idx])
     

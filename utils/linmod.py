@@ -31,20 +31,20 @@ class Linmod():
 
     def forward(self, x, u):
         # Perturb each of the state variables and compute linearisation
-        for i in range(len(x)):
+        for i in range(self.num_states):
 
-            dx = torch.zeros([len(x)])
+            dx = torch.zeros(self.num_states)
             dx[i] = self.eps
 
             self.A[:,i] = (self.calc_xdot(x + dx, u)[0] - self.calc_xdot(x, u)[0]) / self.eps
-            self.C[:,i] = (self.get_obs(x + dx, u)[0] - self.get_obs(x, u)[0]) / self.eps
-        for i in range(len(u)):
+            self.C[:,i] = (self.get_obs(x + dx, u) - self.get_obs(x, u)) / self.eps
+        for i in range(self.num_inps):
 
-            du = torch.zeros([len(u)])
+            du = torch.zeros(self.num_inps)
             du[i] = self.eps
 
             self.B[:,i] = (self.calc_xdot(x, u + du)[0] - self.calc_xdot(x, u)[0]) / self.eps
-            self.D[:,i] = (self.get_obs(x, u + du)[0] - self.get_obs(x, u)[0]) / self.eps
+            self.D[:,i] = (self.get_obs(x, u + du) - self.get_obs(x, u)) / self.eps
 
 
         return cont2discrete((self.A, self.B, self.C, self.D), self.dt)[0:4]

@@ -58,7 +58,7 @@ class Calc_xdot_mpc():
             std_x:
                 {xe, ye, h, phi, theta, psi, V, alpha, beta, p, q, r, T, dh, da, dr, lf2, lf1}
                  1   2   3  4    5      6    7  8      9     10 11 12 13 14  15  16  17   18 <- std indices
-                         1  2    3           4  5      6     7  8  9                 11   10 <- MPC indices
+                            1    2              3      4     5  6  7                 9    8  <- MPC indices
             std_u:
                 {t, dh, da, dr}
                  1  2   3   4 <- std indices
@@ -120,7 +120,7 @@ class Calc_xdot_mpc():
         mpc_xdot = torch.zeros(len(mpc_x))
         for mpc_i, std_i in enumerate(self.mpc_x_idx):
             mpc_xdot[mpc_i] = std_xdot[std_i]
-        return mpc_xdot
+        return mpc_xdot, [], []
 
 
 
