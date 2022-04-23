@@ -18,6 +18,8 @@ class Linmod():
         self.get_obs = get_obs
         self.eps = eps
         self.dt = dt
+        self.num_states = num_states
+        self.num_inps = num_inps
         
         self.A = torch.zeros([num_states, num_states])
         self.B = torch.zeros([num_states, num_inps])
@@ -43,5 +45,6 @@ class Linmod():
 
             self.B[:,i] = (self.calc_xdot(x, u + du)[0] - self.calc_xdot(x, u)[0]) / self.eps
             self.D[:,i] = (self.get_obs(x, u + du)[0] - self.get_obs(x, u)[0]) / self.eps
+
 
         return cont2discrete((self.A, self.B, self.C, self.D), self.dt)[0:4]

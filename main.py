@@ -20,6 +20,11 @@ from f16 import F16
 def main():
     # run through tests or nah
     f16 = F16()
+    mpc_ss = f16.linmod_mpc(f16.x._get_mpc_x(), f16.u._get_mpc_u())
+    std_ss = f16.linmod_std(f16.x.values, f16.u.values)
+    
+    import pdb
+    pdb.set_trace()
     #print(f16.calc_xdot(f16.x.values, f16.u.values))
     f16.step(f16.u.values)
 

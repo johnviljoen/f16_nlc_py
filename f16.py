@@ -43,7 +43,7 @@ class F16(gym.Env):
         # but in keeping with UNIX philosphy I am keeping things modular and separate
         self.linmod_mpc = Linmod(
                 self.calc_xdot_mpc,             # the input output nonlinear plant
-                self.get_obs_mpc,               # the func to generate observable states
+                self.get_obs_mpc,               # takes x.values, u.values as input 
                 len(self.x._get_mpc_x()),       # the number of states
                 len(self.u._get_mpc_u()),       # the number of inputs
                 len(self.x._mpc_obs_x_idx),     # the number of observable states

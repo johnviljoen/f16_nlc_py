@@ -57,12 +57,18 @@ class Calc_xdot_mpc():
         args:
             std_x:
                 {xe, ye, h, phi, theta, psi, V, alpha, beta, p, q, r, T, dh, da, dr, lf2, lf1}
+                 1   2   3  4    5      6    7  8      9     10 11 12 13 14  15  16  17   18 <- std indices
+                         1  2    3           4  5      6     7  8  9                 11   10 <- MPC indices
             std_u:
                 {t, dh, da, dr}
+                 1  2   3   4 <- std indices
+                    1   2   3 <- MPC indices
             mpc_x_idx:
                 list of index of elements of x in x_full
+                [3,4,5,7,8,9,10,11,12,18,17] <- example
             mpc_u_idx:
                 list of index of elements of u in u_full
+                [2,3,4] <- example
         """
         self.std_x = std_x
         self.std_u = std_u
@@ -98,8 +104,10 @@ class Calc_xdot_mpc():
         """
 
         # without assertions we just get a seg fault if wrong states input, this is much easier to debug
-        assert len(mpc_x) == 9, f"ERROR: expected 9 states, got {len(x)}"
-        assert len(mpc_u) == 3, f"ERROR: expected 3 inputs, got {len(u)}"
+        assert len(mpc_x) == len(self.mpc_x_idx), \
+            f"ERROR: expected {len(self.mpc_x_idx)} states, got {len(mpc_x)}"
+        assert len(mpc_u) == len(self.mpc_u_idx), \
+            f"ERROR: expected {len(self.mpc_u_idx)} inputs, got {len(mpc_u)}"
 
         # take the current full state as the starting point, and add the mpc states 
         for mpc_i, std_i in enumerate(self.mpc_x_idx):
@@ -112,7 +120,8 @@ class Calc_xdot_mpc():
         mpc_xdot = torch.zeros(len(mpc_x))
         for mpc_i, std_i in enumerate(self.mpc_x_idx):
             mpc_xdot[mpc_i] = std_xdot[std_i]
-        
+        import pdb
+        pdb.set_trace()
         return mpc_xdot
 
 
