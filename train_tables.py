@@ -176,6 +176,8 @@ def train_table(coeff, LR, device, dtype, coeff_lim,
 
 # In[]
 
+def 
+
 if __name__ == '__main__':
 
     list1 = ['Cx', 'Cz', 'Cm', 'Cy', 'Cn', 'Cl']

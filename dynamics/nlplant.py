@@ -22,7 +22,6 @@ def calc_xdot(x, u):
         atmospherics:
             {mach, qbar, ps}
     """
-
     # initialise variables
     actuator_xdot = torch.zeros(6)
     # Thrust Model

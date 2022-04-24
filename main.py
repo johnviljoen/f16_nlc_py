@@ -20,26 +20,24 @@ from f16 import F16
 def main():
     # run through tests or nah
     f16 = F16()
-    mpc_ss = f16.linmod_mpc(f16.x._get_mpc_x(), f16.u._get_mpc_u())
+    #mpc_ss = f16.linmod_mpc(f16.x._get_mpc_x(), f16.u._get_mpc_u())
     
-    std_ss = f16.linmod_std(f16.x.values, f16.u.values)
-    import pdb
-    pdb.set_trace()
+    #std_ss = f16.linmod_std(f16.x.values, f16.u.values)
     
     #print(f16.calc_xdot(f16.x.values, f16.u.values))
     f16.step(f16.u.values)
 
+
     mpc_xdot = f16.calc_xdot_mpc(f16.x._get_mpc_x(), f16.u._get_mpc_u())#, f16.x.values, f16.u.values, f16.x._mpc_x_idx, f16.u._mpc_u_idx)
 
-    import pdb
-    pdb.set_trace()
     mpc_ss = f16.linmod_mpc(f16.x.mpc, f16.u.mpc)
     std_ss = f16.linmod_std(f16.x.values, f16.u.values)
+    
 
     # trim and set state to trim
     x_trim, opt = f16.trim(1000,700,f16.x, f16.u)
-    f16.x = x_trim
-    f16.u = x_trim[12:16]
+    f16.x.values = x_trim
+    f16.u.values = x_trim[12:16]
 
     def run(ts=4000):
         """ Run simulation for 0.5 seconds """

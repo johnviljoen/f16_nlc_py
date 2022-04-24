@@ -8,11 +8,8 @@ Created on Mon Nov  8 17:18:47 2021
 
 import torch
 from tables.c_tables import c_lookup as table_C
+from tables.nn_tables import NN
 
-
-#from utils.aerodata_parser import construct_lookup
-
-#lookup = construct_lookup('tables/aerodata')
 
 def atmos(alt, vt):
 
@@ -31,7 +28,7 @@ def atmos(alt, vt):
     
     return mach, qbar, ps
 
-def primary_xdot(xu, lookup_type='C'):
+def primary_xdot(xu, lookup_type='NN'):
     
     g    = 32.17                            # gravity, ft/s^2
     m    = 636.94                           # mass, slugs
@@ -53,7 +50,7 @@ def primary_xdot(xu, lookup_type='C'):
     Jx  = 9496.0                            # slug-ft^2
     
     # instantiate xdot
-    xdot = torch.zeros(xu.size()[0])
+    xdot = torch.zeros(xu.shape[0])
     
     # In[states]
     
@@ -108,13 +105,9 @@ def primary_xdot(xu, lookup_type='C'):
     dlef  = (1 - lef/25.0)  # leading edge flap normalized against max angle
     
     # In[Atmospheric effects]
-    
-
-    
     mach, qbar, ps = atmos(alt, vt)
     
     # In[Navigation equations]
-    
     U = vt*ca*cb  # directional velocities
     V = vt*sb
     W = vt*sa*cb
@@ -145,13 +138,71 @@ def primary_xdot(xu, lookup_type='C'):
     xdot[5] = (Q*sphi + R*cphi)/ct
     
     # In[Table Lookup]
+    inp = torch.tensor([alpha, beta, el])
     
     if lookup_type == 'NN':
-        pass
-    
+        
+        # hifi_C
+        Cx = NN['Cx'](inp)
+        Cz = NN['Cz'](inp)
+        Cm = NN['Cm'](inp)
+        Cy = NN['Cy'](inp)
+        Cn = NN['Cn'](inp)
+        Cl = NN['Cl'](inp)
+   
+        # hifi_damping
+        Cxq = NN['Cxq'](inp[0:1])
+        Cyr = NN['Cyr'](inp[0:1])
+        Cyp = NN['Cyp'](inp[0:1])
+        Czq = NN['Czq'](inp[0:1])
+        Clr = NN['Clr'](inp[0:1])
+        Clp = NN['Clp'](inp[0:1])
+        Cmq = NN['Cmq'](inp[0:1])
+        Cnr = NN['Cnr'](inp[0:1])
+        Cnp = NN['Cnp'](inp[0:1])
+
+        # hifi_C_lef
+        delta_Cx_lef = NN['delta_Cx_lef'](inp[0:2])
+        delta_Cz_lef = NN['delta_Cz_lef'](inp[0:2])
+        delta_Cm_lef = NN['delta_Cm_lef'](inp[0:2])
+        delta_Cy_lef = NN['delta_Cy_lef'](inp[0:2])
+        delta_Cn_lef = NN['delta_Cn_lef'](inp[0:2])
+        delta_Cl_lef = NN['delta_Cl_lef'](inp[0:2])
+
+        # hifi_damping_lef
+        delta_Cxq_lef = NN['delta_Cxq_lef'](inp[0:1])
+        delta_Cyr_lef = NN['delta_Cyr_lef'](inp[0:1])
+        delta_Cyp_lef = NN['delta_Cyp_lef'](inp[0:1])
+        delta_Czq_lef = NN['delta_Czq_lef'](inp[0:1])
+        delta_Clr_lef = NN['delta_Clr_lef'](inp[0:1])
+        delta_Clp_lef = NN['delta_Clp_lef'](inp[0:1])
+        delta_Cmq_lef = NN['delta_Cmq_lef'](inp[0:1])
+        delta_Cnr_lef = NN['delta_Cnr_lef'](inp[0:1])
+        delta_Cnp_lef = NN['delta_Cnp_lef'](inp[0:1])
+
+        # hifi_rudder
+        delta_Cy_r30 = NN['delta_Cy_r30'](inp[0:2])
+        delta_Cn_r30 = NN['delta_Cn_r30'](inp[0:2])
+        delta_Cl_r30 = NN['delta_Cl_r30'](inp[0:2])
+
+        # hifi_ailerons
+        delta_Cy_a20     = NN['delta_Cy_a20'](inp[0:2])
+        delta_Cy_a20_lef = NN['delta_Cy_a20_lef'](inp[0:2])
+        delta_Cn_a20     = NN['delta_Cn_a20'](inp[0:2])
+        delta_Cn_a20_lef = NN['delta_Cn_a20_lef'](inp[0:2])
+        delta_Cl_a20     = NN['delta_Cl_a20'](inp[0:2])
+        delta_Cl_a20_lef = NN['delta_Cl_a20_lef'](inp[0:2])
+
+        # hifi_other_coeffs
+        delta_Cnbeta = NN['delta_Cnbeta'](inp[::2])
+        delta_Clbeta = NN['delta_Clbeta'](inp[::2])
+        delta_Cm = NN['delta_Cm'](inp[::2])
+        eta_el = NN['eta_el'](inp[::2])
+        delta_Cm_ds = 0.
+
+
     elif lookup_type == 'C':
         
-        inp = torch.tensor([alpha, beta, el])
         
         # pass alpha, beta, el
         Cx, Cz, Cm, Cy, Cn, Cl = table_C.hifi_C(inp)
