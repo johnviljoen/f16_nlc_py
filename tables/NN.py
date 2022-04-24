@@ -13,8 +13,6 @@ from tables.c_tables import C_lookup
 
 C = C_lookup()
 
-
-
 class approximator(nn.Module):
     def __init__(self, coeff):
         super().__init__()

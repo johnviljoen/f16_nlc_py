@@ -352,3 +352,179 @@ Cn:
 final training loss: 0.0003257675562053919 
 final validation loss: 0.0003298299852758646 
  
+Cx: 
+final training loss: 0.0001377507287543267 
+final validation loss: 0.00013807901996187866 
+ 
+Cz: 
+final training loss: 8.961682033259422e-05 
+final validation loss: 8.997040276881307e-05 
+ 
+Cm: 
+final training loss: 0.00026673864340409636 
+final validation loss: 0.00026950545725412667 
+ 
+Cy: 
+final training loss: 7.668056059628725e-05 
+final validation loss: 7.646111771464348e-05 
+ 
+Cn: 
+final training loss: 0.0002786506083793938 
+final validation loss: 0.00028372384258545935 
+ 
+Cl: 
+final training loss: 0.0001371397083858028 
+final validation loss: 0.00013770494842901826 
+ 
+Cxq: 
+final training loss: 0.0010150063317269087 
+final validation loss: 0.001019862713292241 
+ 
+Cyr: 
+final training loss: 0.00028546276735141873 
+final validation loss: 0.00028077061870135367 
+ 
+Cyp: 
+final training loss: 0.00029223199817351997 
+final validation loss: 0.00028816243866458535 
+ 
+Czq: 
+final training loss: 0.00042672266135923564 
+final validation loss: 0.0004287133051548153 
+ 
+Clr: 
+final training loss: 0.00016436709847766906 
+final validation loss: 0.00016650379984639585 
+ 
+Clp: 
+final training loss: 9.017550473799929e-05 
+final validation loss: 9.049916116055101e-05 
+ 
+Cmq: 
+final training loss: 0.00018159521277993917 
+final validation loss: 0.00018547844956628978 
+ 
+Cnr: 
+final training loss: 0.0008439688244834542 
+final validation loss: 0.0008597431005910039 
+ 
+Cnp: 
+final training loss: 0.0006800193223170936 
+final validation loss: 0.0006808157777413726 
+ 
+delta_Cx_lef: 
+final training loss: 5.268623499432579e-05 
+final validation loss: 5.447537841973826e-05 
+ 
+delta_Cz_lef: 
+final training loss: 0.001642516814172268 
+final validation loss: 0.001631236867979169 
+ 
+delta_Cm_lef: 
+final training loss: 0.0010041926288977265 
+final validation loss: 0.0009836831595748663 
+ 
+delta_Cy_lef: 
+final training loss: 0.0006117335287854075 
+final validation loss: 0.0005867278086952865 
+ 
+delta_Cn_lef: 
+final training loss: 0.0015164240030571818 
+final validation loss: 0.001524124527350068 
+ 
+delta_Cl_lef: 
+final training loss: 0.0005019272211939096 
+final validation loss: 0.0005033439956605434 
+ 
+delta_Cxq_lef: 
+final training loss: 0.00020184126333333552 
+final validation loss: 0.0002023490669671446 
+ 
+delta_Cyr_lef: 
+final training loss: 0.0001441997883375734 
+final validation loss: 0.0001370408572256565 
+ 
+delta_Cyp_lef: 
+final training loss: 0.0021134500857442617 
+final validation loss: 0.0020817324984818697 
+ 
+delta_Czq_lef: 
+final training loss: 0.0011935965158045292 
+final validation loss: 0.0011896488722413778 
+ 
+delta_Clr_lef: 
+final training loss: 0.0001242200523847714 
+final validation loss: 0.00012405494635459036 
+ 
+delta_Clp_lef: 
+final training loss: 0.00010294053208781406 
+final validation loss: 0.00010519284114707261 
+ 
+delta_Cmq_lef: 
+final training loss: 0.0002488430473022163 
+final validation loss: 0.00024717484484426677 
+ 
+delta_Cnr_lef: 
+final training loss: 0.0002819618966896087 
+final validation loss: 0.0002948013134300709 
+ 
+delta_Cnp_lef: 
+final training loss: 0.00027192968991585076 
+final validation loss: 0.00027072534430772066 
+ 
+delta_Cy_r30: 
+final training loss: 0.00026881147641688585 
+final validation loss: 0.000266552233370021 
+ 
+delta_Cn_r30: 
+final training loss: 0.0009590353001840413 
+final validation loss: 0.000979654723778367 
+ 
+delta_Cl_r30: 
+final training loss: 0.0009123285999521613 
+final validation loss: 0.0009285343694500625 
+ 
+delta_Cy_a20: 
+final training loss: 0.00042186270002275705 
+final validation loss: 0.000432675878982991 
+ 
+delta_Cy_a20_lef: 
+final training loss: 0.0009255568729713559 
+final validation loss: 0.0009093222906813025 
+ 
+delta_Cn_a20: 
+final training loss: 0.0008933699573390186 
+final validation loss: 0.0009166095405817032 
+ 
+delta_Cn_a20_lef: 
+final training loss: 0.0029338295571506023 
+final validation loss: 0.00293329986743629 
+ 
+delta_Cl_a20: 
+final training loss: 0.00016626654542051256 
+final validation loss: 0.00016633390623610467 
+ 
+delta_Cl_a20_lef: 
+final training loss: 0.0010578505462035537 
+final validation loss: 0.0010771822417154908 
+ 
+delta_Cnbeta: 
+final training loss: 2.8317972464719787e-05 
+final validation loss: 2.6369092665845528e-05 
+ 
+delta_Clbeta: 
+final training loss: 6.245410622796044e-05 
+final validation loss: 6.212996959220618e-05 
+ 
+delta_Cm: 
+final training loss: 3.578492032829672e-05 
+final validation loss: 3.531741094775498e-05 
+ 
+eta_el: 
+final training loss: 1.2313188335610903e-07 
+final validation loss: 1.2424038686731365e-07 
+ 
+delta_Cm_ds: 
+final training loss: nan 
+final validation loss: nan 
+ 

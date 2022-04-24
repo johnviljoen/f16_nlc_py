@@ -15,7 +15,7 @@ I can feel a computer science student rolling in his grave as I write this
 monstrosity.
 """
 
-from tables import table_wrap
+from tables.c_tables import table_wrap
 import torch
 from tqdm import tqdm
 
@@ -36,6 +36,7 @@ list6 = ['delta_Cy_a20', 'delta_Cy_a20_lef', 'delta_Cn_a20', 'delta_Cn_a20_lef',
 list7 = ['delta_Cnbeta', 'delta_Clbeta', 'delta_Cm', 'eta_el', 'delta_Cm_ds']
 
 sum_list = list1 + list2 + list3 + list4 + list5 + list6 + list7
+sum_list = ['delta_Cm_ds']
 
 lim_dict = {}
 
@@ -54,6 +55,6 @@ for coeff in sum_list:
                 storage[i,j,k] = table.call(inp)
                 
     lim_dict[coeff] = torch.tensor([torch.max(storage), torch.min(storage)])
-    
-torch.save(lim_dict, 'NNs/lookup_table_limits.pt')
+   
+torch.save(lim_dict, 'tables/NNs/lookup_table_limits.pt')
 
