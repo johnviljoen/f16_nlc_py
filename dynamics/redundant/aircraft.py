@@ -7,8 +7,10 @@ Created on Mon Nov  8 17:18:47 2021
 """
 
 import torch
+import torch.nn as nn
 from tables.c_tables import c_lookup as table_C
 from tables.nn_tables import NN
+
 
 def atmos(alt, vt):
 

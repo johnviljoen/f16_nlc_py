@@ -4,8 +4,8 @@ import numpy as np
 from scipy.signal import cont2discrete
 
 from dynamics.parameters import state_vector, input_vector, simulation_parameters
-from dynamics.nlplant import calc_xdot, Calc_xdot_mpc
-from control.trim import trim
+from dynamics.nlplant import Nlplant
+from control.trim import Trim
 from control.lqr import dlqr
 from utils.linmod import Linmod
 from utils.get_obs import Get_observation
@@ -28,8 +28,9 @@ class F16(nn.Module):
         self.u.values = self.u.values.type(dtype).to(device)
 
         
-        self.calc_xdot = calc_xdot              # wrap the calculate xdot
-        
+        #self.calc_xdot = calc_xdot              # wrap the calculate xdot
+        self.calc_xdot = Nlplant(device, dtype, 'C')
+
         # instantiate calc_xdot_mpc, this could be functional, but in the interest of not passing
         # about a huge amount of functions every time I have made it a classed.
         self.calc_xdot_mpc = Calc_xdot_mpc(
@@ -38,7 +39,8 @@ class F16(nn.Module):
                 self.x._mpc_x_idx,              # the indices of the MPC states inside the list of all states
                 self.u._mpc_u_idx)              # the indices of the MPC inputs inside the list of all inputs
 
-        self.trim = trim                        # wrap the trim function
+        # device, dtype redundant here for now as still uses scipy minimize - should rework for pytorch
+        self.trim = Trim(device, dtype)                        # wrap the trim function
        
         # instantiate get observation classes, sure making these classes is definitely overkill
         # but it does allow for separation of modules and needs less passing around of variables

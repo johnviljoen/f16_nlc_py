@@ -2,7 +2,6 @@ import ctypes
 import torch
 from numpy import pi
 from dynamics.parameters import x_lb, x_ub, u_lb, u_ub
-from dynamics.aircraft import atmos
 
 def upd_lef(h, V, alpha, lef_state_1, lef_state_2):
     
