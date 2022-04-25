@@ -1,5 +1,5 @@
 import ctypes
-import numpy as np
+import torch
 from numpy import pi
 from dynamics.parameters import x_lb, x_ub, u_lb, u_ub
 from dynamics.aircraft import atmos
@@ -17,33 +17,33 @@ def upd_lef(h, V, alpha, lef_state_1, lef_state_2):
     lef_cmd = LF_out + 1.45 - atmos_out
     
     # command saturation
-    lef_cmd = np.clip(lef_cmd,x_lb[16],x_ub[16])
+    lef_cmd = torch.clip(lef_cmd,x_lb[16],x_ub[16])
     # rate saturation
-    lef_err = np.clip((1/0.136) * (lef_cmd - lef_state_2),-25,25)
+    lef_err = torch.clip((1/0.136) * (lef_cmd - lef_state_2),-25,25)
     
     return LF_err*7.25, lef_err
 
 def upd_thrust(T_cmd, T_state):
     # command saturation
-    T_cmd = np.clip(T_cmd,u_lb[0],u_ub[0])
+    T_cmd = torch.clip(T_cmd,u_lb[0],u_ub[0])
     # rate saturation
-    return np.clip(T_cmd - T_state, -10000, 10000)
+    return torch.clip(T_cmd - T_state, -10000, 10000)
 
 def upd_dstab(dstab_cmd, dstab_state):
     # command saturation
-    dstab_cmd = np.clip(dstab_cmd,u_lb[1],u_ub[1])
+    dstab_cmd = torch.clip(dstab_cmd,u_lb[1],u_ub[1])
     # rate saturation
-    return np.clip(20.2*(dstab_cmd - dstab_state), -60, 60)
+    return torch.clip(20.2*(dstab_cmd - dstab_state), -60, 60)
 
 def upd_ail(ail_cmd, ail_state):
     # command saturation
-    ail_cmd = np.clip(ail_cmd,u_lb[2],u_ub[2])
+    ail_cmd = torch.clip(ail_cmd,u_lb[2],u_ub[2])
     # rate saturation
-    return np.clip(20.2*(ail_cmd - ail_state), -80, 80)
+    return torch.clip(20.2*(ail_cmd - ail_state), -80, 80)
 
 def upd_rud(rud_cmd, rud_state):
     # command saturation
-    rud_cmd = np.clip(rud_cmd,u_lb[3],u_ub[3])
+    rud_cmd = torch.clip(rud_cmd,u_lb[3],u_ub[3])
     # rate saturation
-    return np.clip(20.2*(rud_cmd - rud_state), -120, 120)
+    return torch.clip(20.2*(rud_cmd - rud_state), -120, 120)
 

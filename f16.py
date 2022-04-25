@@ -1,6 +1,5 @@
-from control.trim import trim
 import torch
-import gym
+import torch.nn as nn
 import numpy as np
 from scipy.signal import cont2discrete
 
@@ -11,15 +10,23 @@ from control.lqr import dlqr
 from utils.linmod import Linmod
 from utils.get_obs import Get_observation
 
-class F16(gym.Env):
+class F16(nn.Module):
     
-    def __init__(self):
-        
+    def __init__(self, device, dtype):
         super().__init__()
-        
+
+        self.device = device
+        self.dtype = dtype
+        print(f'device chosen: {device}')
+        print(f'dtype chosen: {dtype}')
+
         self.x = state_vector                   # mutable state dataclass
         self.u = input_vector                   # mutable input dataclass
-        self.paras = simulation_parameters      # immutable simulation parameters dataclass
+        self.paras = simulation_parameters      # simulation parameters dataclass
+
+        self.x.values = self.x.values.type(dtype).to(device)
+        self.u.values = self.u.values.type(dtype).to(device)
+
         
         self.calc_xdot = calc_xdot              # wrap the calculate xdot
         

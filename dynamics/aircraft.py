@@ -10,7 +10,6 @@ import torch
 from tables.c_tables import c_lookup as table_C
 from tables.nn_tables import NN
 
-
 def atmos(alt, vt):
 
     rho0 = 2.377e-3
