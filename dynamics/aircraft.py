@@ -28,7 +28,7 @@ def atmos(alt, vt):
     
     return mach, qbar, ps
 
-def primary_xdot(xu, lookup_type='NN'):
+def primary_xdot(xu, lookup_type='C'):
     
     g    = 32.17                            # gravity, ft/s^2
     m    = 636.94                           # mass, slugs
